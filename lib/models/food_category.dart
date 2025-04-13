@@ -7,16 +7,16 @@ class FoodCategory {
 }
 
 List<FoodCategory> categories = [
-  FoodCategory('Dessert', 16, 'assets/categories/dessert.png'),
-  FoodCategory('Vegetarian', 20, 'assets/categories/vegetarian.png'),
-  FoodCategory('Burger', 21, 'assets/categories/burger.png'),
-  FoodCategory('Asian', 16, 'assets/categories/asian.png'),
-  FoodCategory('Italian', 18, 'assets/categories/italian.png'),
-  FoodCategory('Mexican', 15, 'assets/categories/mexican.png'),
-  FoodCategory('Seafood', 14, 'assets/categories/seafood.png'),
-  FoodCategory('Pizza', 19, 'assets/categories/pizza.png'),
-  FoodCategory('Sushi', 15, 'assets/categories/sushi.png'),
-  FoodCategory('Coffee', 22, 'assets/categories/coffee.png'),
-  FoodCategory('Fast Food', 23, 'assets/categories/fast_food.png'),
-  FoodCategory('Salad', 18, 'assets/categories/salad.png'),
+  FoodCategory('Cardio', 16, 'assets/categories/cardio.png'),
+  FoodCategory('Strength', 20, 'assets/categories/strength.png'),
+  FoodCategory('HIIT', 21, 'assets/categories/hiit.png'),
+  FoodCategory('Yoga', 16, 'assets/categories/yoga.png'),
+  FoodCategory('Pilates', 18, 'assets/categories/pilates.png'),
+  FoodCategory('CrossFit', 15, 'assets/categories/crossfit.png'),
+  FoodCategory('Calisthenics', 14, 'assets/categories/calisthenics.png'),
+  FoodCategory('Mobility', 19, 'assets/categories/mobility.png'),
+  FoodCategory('Stretching', 15, 'assets/categories/stretching.png'),
+  FoodCategory('Functional', 22, 'assets/categories/functional.png'),
+  FoodCategory('Core Training', 23, 'assets/categories/core_training.png'),
+  FoodCategory('Weightlifting', 18, 'assets/categories/weightlifting.png'),
 ];

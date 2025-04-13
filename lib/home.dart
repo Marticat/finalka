@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'screens/profile_page.dart';
 
 import 'components/color_button.dart';
 import 'components/theme_button.dart';
@@ -40,7 +41,7 @@ class _HomeState extends State<Home> {
     ),
     NavigationDestination(
       icon: Icon(Icons.list_outlined),
-      label: 'Orders',
+      label: 'Trainings',
       selectedIcon: Icon(Icons.list),
     ),
     NavigationDestination(
@@ -58,13 +59,9 @@ class _HomeState extends State<Home> {
         orderManager: widget.ordersManager,
       ),
       MyOrdersPage(orderManager: widget.ordersManager),
-      const Center(
-        child: Text(
-          'Account Page',
-          style: TextStyle(fontSize: 32.0),
-        ),
-      ),
+      const ProfilePage(), // ← this is new
     ];
+
 
     return Scaffold(
       appBar: AppBar(

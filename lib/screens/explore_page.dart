@@ -20,31 +20,82 @@ class ExplorePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: mockService.getExploreData(),
-      builder: (context, AsyncSnapshot<ExploreData> snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          final restaurants = snapshot.data?.restaurants ?? [];
-          final categories = snapshot.data?.categories ?? [];
-          final posts = snapshot.data?.friendPosts ?? [];
-          return ListView(
-              shrinkWrap: true,
-              scrollDirection: Axis.vertical,
+    return Scaffold(
+      backgroundColor: Colors.grey[100],
+      body: FutureBuilder(
+        future: mockService.getExploreData(),
+        builder: (context, AsyncSnapshot<ExploreData> snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            final restaurants = snapshot.data?.restaurants ?? [];
+            final categories = snapshot.data?.categories ?? [];
+            final posts = snapshot.data?.friendPosts ?? [];
+
+            return ListView(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
               children: [
-                RestaurantSection(
-                  restaurants: restaurants,
-                  cartManager: cartManager,
-                  orderManager: orderManager,
+                SectionHeader(title: 'Challenge yourself'),
+                Card(
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  elevation: 2,
+                  margin: const EdgeInsets.only(bottom: 24),
+                  child: Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: RestaurantSection(
+                      restaurants: restaurants,
+                      cartManager: cartManager,
+                      orderManager: orderManager,
+                    ),
+                  ),
                 ),
-                CategorySection(categories: categories),
-                PostSection(posts: posts),
-              ]);
-        } else {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-      },
+                SectionHeader(title: 'Try something new!'),
+                Card(
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  elevation: 2,
+                  margin: const EdgeInsets.only(bottom: 24),
+                  child: Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: CategorySection(categories: categories),
+                  ),
+                ),
+                SectionHeader(title: 'Share,React'),
+                Card(
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  elevation: 2,
+                  margin: const EdgeInsets.only(bottom: 24),
+                  child: Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: PostSection(posts: posts),
+                  ),
+                ),
+              ],
+            );
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
+      ),
+    );
+  }
+}
+
+class SectionHeader extends StatelessWidget {
+  final String title;
+
+  const SectionHeader({super.key, required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Text(
+        title,
+        style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+          fontWeight: FontWeight.w600,
+          color: Colors.black87,
+        ),
+      ),
     );
   }
 }

@@ -19,9 +19,9 @@ class Order {
 
   String getFormattedSegment() {
     if (selectedSegment.contains(0)) {
-      return 'Delivery';
+      return 'Superset';
     } else if (selectedSegment.contains(1)) {
-      return 'Self Pick Up';
+      return 'With Rest';
     } else {
       return 'Unknown'; // Handle any other cases as needed
     }

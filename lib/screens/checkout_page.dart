@@ -33,7 +33,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
   final TextEditingController _nameController = TextEditingController();
   String formatDate(DateTime? dateTime) {
     if (dateTime == null) {
-      return 'Select Date';
+      return 'Select Workout Date';
     }
     final formatter = DateFormat('yyyy-MM-dd');
     return formatter.format(dateTime);
@@ -41,7 +41,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
   String formatTimeOfDay(TimeOfDay? timeOfDay) {
     if (timeOfDay == null) {
-      return 'Select Time';
+      return 'Select Start Time';
     }
     final hour = timeOfDay.hour.toString().padLeft(2, '0');
     final minute = timeOfDay.minute.toString().padLeft(2, '0');
@@ -60,12 +60,12 @@ class _CheckoutPageState extends State<CheckoutPage> {
       segments: const [
         ButtonSegment(
           value: 0,
-          label: Text('Delivery'),
+          label: Text('Superset'),
           icon: Icon(Icons.pedal_bike),
         ),
         ButtonSegment(
           value: 1,
-          label: Text('Pickup'),
+          label: Text('With Rest'),
           icon: Icon(Icons.local_mall),
         ),
       ],
@@ -78,7 +78,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
     return TextField(
       controller: _nameController,
       decoration: const InputDecoration(
-        labelText: 'Contact Name',
+        labelText: 'Workout Plan Name',
       ),
     );
   }
@@ -162,7 +162,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 ),
               ),
               title: Text(item.name),
-              subtitle: Text('Price: \$${item.price}'),
+              subtitle: Text('Calories: \$${item.price}'),
             ),
           );
         },
@@ -193,7 +193,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Text(
-            '''Submit Order - \$${widget.cartManager.totalCost.toStringAsFixed(2)}'''),
+            '''Accept plan - \$${widget.cartManager.totalCost.toStringAsFixed(2)}'''),
       ),
     );
   }
@@ -217,7 +217,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              'Order Details',
+              'Workout Details',
               style: textTheme.headlineSmall,
             ),
             const SizedBox(height: 16.0),
@@ -238,7 +238,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
               ],
             ),
             const SizedBox(height: 16.0),
-            const Text('Order Summary'),
+            const Text('Exercise Summary'),
             _buildOrderSummary(context),
             _buildSubmitButton(),
           ],

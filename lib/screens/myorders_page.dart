@@ -65,7 +65,7 @@ class OrderTile extends StatelessWidget {
             style: textTheme.bodyLarge,
           ),
           Text(order.getFormattedOrderInfo()),
-          Text('Items: ${order.items.length}'),
+          Text('Exercises: ${order.items.length}'),
         ],
       ),
     );

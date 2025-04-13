@@ -42,7 +42,7 @@ class _YummyState extends State<Yummy> {
 
   @override
   Widget build(BuildContext context) {
-    const appTitle = 'Yummy';
+    const appTitle = 'Gym';
 
     return MaterialApp(
       title: appTitle,

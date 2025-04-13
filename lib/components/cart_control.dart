@@ -69,7 +69,7 @@ class _CartControlState extends State<CartControl> {
       onPressed: () {
         widget.addToCart(_cartNumber);
       },
-      child: const Text('Add to Cart'),
+      child: const Text('Add to training'),
     );
   }
 }

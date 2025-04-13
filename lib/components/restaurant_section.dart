@@ -28,7 +28,7 @@ class RestaurantSection extends StatelessWidget {
           const Padding(
             padding: EdgeInsets.only(left: 16.0, bottom: 8.0),
             child: Text(
-              'Food near me',
+              'Gym near me',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,

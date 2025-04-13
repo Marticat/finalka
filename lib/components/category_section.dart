@@ -20,7 +20,7 @@ class CategorySection extends StatelessWidget {
           const Padding(
             padding: EdgeInsets.only(left: 16.0, bottom: 8.0),
             child: Text(
-              'Categories',
+              'Exercise types',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
