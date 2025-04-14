@@ -19,7 +19,7 @@ class MyOrdersPage extends StatelessWidget {
       appBar: AppBar(
         centerTitle: false,
         title: Text(
-          'My Orders',
+          'Planned exercises',
           style: textTheme.headlineMedium,
         ),
       ),
@@ -51,7 +51,7 @@ class OrderTile extends StatelessWidget {
       leading: ClipRRect(
         borderRadius: BorderRadius.circular(8.0),
         child: Image.asset(
-          'assets/food/burger.webp',
+          'assets/food/burger.png',
           width: 50.0,
           height: 50.0,
           fit: BoxFit.cover,
