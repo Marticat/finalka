@@ -8,6 +8,10 @@ import 'models/workout_manager.dart';
 import 'models/plan_manager.dart';
 import 'screens/explore_page.dart';
 import 'screens/myorders_page.dart';
+import 'screens/food_search_screen.dart';
+import 'screens/meal_plan_screen.dart';
+
+
 
 class Home extends StatefulWidget {
   const Home({
@@ -45,6 +49,11 @@ class _HomeState extends State<Home> {
       selectedIcon: Icon(Icons.list),
     ),
     NavigationDestination(
+      icon: Icon(Icons.restaurant_outlined),
+      label: 'Food',
+      selectedIcon: Icon(Icons.restaurant),
+    ),
+    NavigationDestination(
       icon: Icon(Icons.person_2_outlined),
       label: 'Account',
       selectedIcon: Icon(Icons.person),
@@ -59,6 +68,7 @@ class _HomeState extends State<Home> {
         planManager: widget.planManager,
       ),
       MyOrdersPage(planManager: widget.planManager),
+      MealPlanScreen(),
       const ProfilePage(), // ← this is new
     ];
 
