@@ -22,8 +22,8 @@ class CheckoutPage extends StatefulWidget {
 
 class _CheckoutPageState extends State<CheckoutPage> {
   final Map<int, Widget> myTabs = const <int, Widget>{
-    0: Text('Delivery'),
-    1: Text('Self Pick-Up'),
+    0: Text('Superset'),
+    1: Text('With Rest'),
   };
   Set<int> selectedSegment = {0};
   TimeOfDay? selectedTime;
@@ -61,12 +61,12 @@ class _CheckoutPageState extends State<CheckoutPage> {
         ButtonSegment(
           value: 0,
           label: Text('Superset'),
-          icon: Icon(Icons.pedal_bike),
+          icon: Icon(Icons.fitness_center),
         ),
         ButtonSegment(
           value: 1,
           label: Text('With Rest'),
-          icon: Icon(Icons.local_mall),
+          icon: Icon(Icons.timer),
         ),
       ],
       selected: selectedSegment,

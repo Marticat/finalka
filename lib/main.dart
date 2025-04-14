@@ -60,8 +60,8 @@ class _YummyState extends State<Yummy> {
       ),
       home: Home(
         appTitle: appTitle,
-        cartManager: _cartManager,
-        ordersManager: _orderManager,
+        workoutManager: _cartManager,
+        planManager: _orderManager,
         changeTheme: changeThemeMode,
         changeColor: changeColor,
         colorSelected: colorSelected,

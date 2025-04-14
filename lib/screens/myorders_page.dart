@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import '../models/plan_manager.dart';
 
 class MyOrdersPage extends StatelessWidget {
-  final PlanManager orderManager;
+  final PlanManager planManager;
 
   const MyOrdersPage({
     super.key,
-    required this.orderManager,
+    required this.planManager,
   });
 
   @override
@@ -24,9 +24,9 @@ class MyOrdersPage extends StatelessWidget {
         ),
       ),
       body: ListView.builder(
-        itemCount: orderManager.totalOrders,
+        itemCount: planManager.totalOrders,
         itemBuilder: (context, index) {
-          return OrderTile(order: orderManager.orders[index]);
+          return OrderTile(order: planManager.orders[index]);
         },
       ),
     );

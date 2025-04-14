@@ -6,16 +6,16 @@ import '../models/plan_manager.dart';
 import '../models/gym.dart';
 import '../screens/gym_page.dart';
 
-class RestaurantSection extends StatelessWidget {
-  final List<Gym> restaurants;
-  final CartManager cartManager;
-  final PlanManager orderManager;
+class GymSection extends StatelessWidget {
+  final List<Gym> gyms;
+  final CartManager workoutManager;
+  final PlanManager planManager;
 
-  const RestaurantSection({
+  const GymSection({
     super.key,
-    required this.restaurants,
-    required this.cartManager,
-    required this.orderManager,
+    required this.gyms,
+    required this.workoutManager,
+    required this.planManager,
   });
 
   @override
@@ -39,20 +39,20 @@ class RestaurantSection extends StatelessWidget {
             height: 230,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: restaurants.length,
+              itemCount: gyms.length,
               itemBuilder: (context, index) {
                 return SizedBox(
                   width: 300,
-                  child: RestaurantLandscapeCard(
-                    restaurant: restaurants[index],
+                  child: GymLandscapeCard(
+                    gym: gyms[index],
                     onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => RestaurantPage(
-                            restaurant: restaurants[index],
-                            cartManager: cartManager,
-                            ordersManager: orderManager,
+                            gym: gyms[index],
+                            workoutManager: workoutManager,
+                            planManager: planManager,
                           ),
                         ),
                       );

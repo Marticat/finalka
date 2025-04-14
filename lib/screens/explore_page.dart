@@ -11,13 +11,13 @@ import '../screens/exercise_list_page.dart';
 
 class ExplorePage extends StatelessWidget {
   final mockService = MockYummyService();
-  final CartManager cartManager;
-  final PlanManager orderManager;
+  final CartManager workoutManager;
+  final PlanManager planManager;
 
   ExplorePage({
     super.key,
-    required this.cartManager,
-    required this.orderManager,
+    required this.workoutManager,
+    required this.planManager,
   });
 
   @override
@@ -42,10 +42,10 @@ class ExplorePage extends StatelessWidget {
                   margin: const EdgeInsets.only(bottom: 24),
                   child: Padding(
                     padding: const EdgeInsets.all(12),
-                    child: RestaurantSection(
-                      restaurants: restaurants,
-                      cartManager: cartManager,
-                      orderManager: orderManager,
+                    child: GymSection(
+                      gyms: restaurants,
+                      workoutManager: workoutManager,
+                      planManager: planManager,
                     ),
                   ),
                 ),

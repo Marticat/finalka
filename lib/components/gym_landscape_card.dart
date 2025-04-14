@@ -2,22 +2,22 @@ import 'package:flutter/material.dart';
 
 import '../models/gym.dart';
 
-class RestaurantLandscapeCard extends StatefulWidget {
-  final Gym restaurant;
+class GymLandscapeCard extends StatefulWidget {
+  final Gym gym;
   final Function() onTap;
 
-  const RestaurantLandscapeCard({
+  const GymLandscapeCard({
     super.key,
-    required this.restaurant,
+    required this.gym,
     required this.onTap,
   });
 
   @override
-  State<RestaurantLandscapeCard> createState() =>
-      _RestaurantLandscapeCardState();
+  State<GymLandscapeCard> createState() =>
+      _GymLandscapeCardState();
 }
 
-class _RestaurantLandscapeCardState extends State<RestaurantLandscapeCard> {
+class _GymLandscapeCardState extends State<GymLandscapeCard> {
   bool _isFavorited = false;
 
   @override
@@ -39,7 +39,7 @@ class _RestaurantLandscapeCardState extends State<RestaurantLandscapeCard> {
                 fit: StackFit.expand,
                 children: [
                   Image.asset(
-                    widget.restaurant.imageUrl,
+                    widget.gym.imageUrl,
                     fit: BoxFit.cover,
                   ),
                   Positioned(
@@ -66,11 +66,11 @@ class _RestaurantLandscapeCardState extends State<RestaurantLandscapeCard> {
           ),
           ListTile(
             title: Text(
-              widget.restaurant.name,
+              widget.gym.name,
               style: textTheme.titleSmall,
             ),
             subtitle: Text(
-              widget.restaurant.attributes,
+              widget.gym.attributes,
               maxLines: 1,
               style: textTheme.bodySmall,
             ),

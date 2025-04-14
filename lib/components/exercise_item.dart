@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 import '../models/gym.dart';
 
-class RestaurantItem extends StatelessWidget {
+class GymItem extends StatelessWidget {
   final ExerciseItem item;
 
-  const RestaurantItem({
+  const GymItem({
     super.key,
     required this.item,
   });

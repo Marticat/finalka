@@ -8,15 +8,15 @@ import '../models/gym.dart';
 import 'checkout_page.dart';
 
 class RestaurantPage extends StatefulWidget {
-  final Gym restaurant;
-  final CartManager cartManager;
-  final PlanManager ordersManager;
+  final Gym gym;
+  final CartManager workoutManager;
+  final PlanManager planManager;
 
   const RestaurantPage({
     super.key,
-    required this.restaurant,
-    required this.cartManager,
-    required this.ordersManager,
+    required this.gym,
+    required this.workoutManager,
+    required this.planManager,
   });
 
   @override
@@ -61,7 +61,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
           fit: StackFit.expand,
           children: [
             Image.asset(
-              widget.restaurant.imageUrl,
+              widget.gym.imageUrl,
               fit: BoxFit.cover,
               color: Colors.black.withOpacity(0.3),
               colorBlendMode: BlendMode.darken,
@@ -80,7 +80,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Text(
-                  widget.restaurant.name,
+                  widget.gym.name,
                   style: const TextStyle(
                     color: Colors.white,
                     fontSize: 28,
@@ -97,7 +97,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
 
   SliverToBoxAdapter _buildInfoSection() {
     final textTheme = Theme.of(context).textTheme;
-    final restaurant = widget.restaurant;
+    final restaurant = widget.gym;
     return SliverToBoxAdapter(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -127,10 +127,10 @@ class _RestaurantPageState extends State<RestaurantPage> {
   }
 
   Widget _buildGridItem(int index) {
-    final item = widget.restaurant.items[index];
+    final item = widget.gym.items[index];
     return InkWell(
       onTap: () => _showBottomSheet(item),
-      child: RestaurantItem(item: item),
+      child: GymItem(item: item),
     );
   }
 
@@ -157,7 +157,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
         crossAxisCount: columns,
       ),
       itemBuilder: (context, index) => _buildGridItem(index),
-      itemCount: widget.restaurant.items.length,
+      itemCount: widget.gym.items.length,
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
     );
@@ -186,7 +186,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
       constraints: const BoxConstraints(maxWidth: 480),
       builder: (context) => ItemDetails(
         item: item,
-        cartManager: widget.cartManager,
+        cartManager: widget.workoutManager,
         quantityUpdated: () {
           setState(() {});
         },
@@ -199,12 +199,12 @@ class _RestaurantPageState extends State<RestaurantPage> {
       width: drawerWidth,
       child: Drawer(
         child: CheckoutPage(
-          cartManager: widget.cartManager,
+          cartManager: widget.workoutManager,
           didUpdate: () {
             setState(() {});
           },
           onSubmit: (order) {
-            widget.ordersManager.addOrder(order);
+            widget.planManager.addOrder(order);
             Navigator.popUntil(context, (route) => route.isFirst);
           },
         ),
@@ -221,7 +221,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
       onPressed: openDrawer,
       tooltip: 'List',
       icon: const Icon(Icons.shopping_cart),
-      label: Text('${widget.cartManager.items.length} Exercises to do'),
+      label: Text('${widget.workoutManager.items.length} Exercises to do'),
     );
   }
 

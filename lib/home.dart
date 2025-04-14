@@ -12,16 +12,16 @@ import 'screens/myorders_page.dart';
 class Home extends StatefulWidget {
   const Home({
     super.key,
-    required this.cartManager,
-    required this.ordersManager,
+    required this.workoutManager,
+    required this.planManager,
     required this.changeTheme,
     required this.changeColor,
     required this.colorSelected,
     required this.appTitle,
   });
 
-  final CartManager cartManager;
-  final PlanManager ordersManager;
+  final CartManager workoutManager;
+  final PlanManager planManager;
   final ColorSelection colorSelected;
   final void Function(bool useLightMode) changeTheme;
   final void Function(int value) changeColor;
@@ -55,10 +55,10 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     final pages = [
       ExplorePage(
-        cartManager: widget.cartManager,
-        orderManager: widget.ordersManager,
+        workoutManager: widget.workoutManager,
+        planManager: widget.planManager,
       ),
-      MyOrdersPage(orderManager: widget.ordersManager),
+      MyOrdersPage(planManager: widget.planManager),
       const ProfilePage(), // ← this is new
     ];
 
