@@ -1,3 +1,3 @@
-export 'food_category.dart';
+export 'exercise_category.dart';
 export 'post.dart';
-export 'restaurant.dart';
+export 'gym.dart';

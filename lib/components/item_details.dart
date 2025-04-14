@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 
-import '../models/cart_manager.dart';
-import '../models/restaurant.dart';
+import '../models/workout_manager.dart';
+import '../models/gym.dart';
 import 'cart_control.dart';
 
 class ItemDetails extends StatefulWidget {
-  final Item item;
+  final ExerciseItem item;
   final CartManager cartManager;
   final void Function() quantityUpdated;
 
@@ -79,7 +79,7 @@ class _ItemDetailsState extends State<ItemDetails> {
     );
   }
 
-  Widget _addToCartControl(Item item) {
+  Widget _addToCartControl(ExerciseItem item) {
     return CartControl(
       addToCart: (number) {
         const uuid = Uuid();

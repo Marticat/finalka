@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../models/cart_manager.dart';
-import '../models/order_manager.dart';
+import '../models/workout_manager.dart';
+import '../models/plan_manager.dart';
 
 class CheckoutPage extends StatefulWidget {
   final CartManager cartManager;
   final Function() didUpdate;
-  final Function(Order) onSubmit;
+  final Function(WorkoutPlan) onSubmit;
 
   const CheckoutPage({
     super.key,
@@ -180,7 +180,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
               final selectedDate = this.selectedDate;
               final name = _nameController.text;
               final items = widget.cartManager.items;
-              final order = Order(
+              final order = WorkoutPlan(
                 selectedSegment: selectedSegment,
                 selectedTime: selectedTime,
                 selectedDate: selectedDate,

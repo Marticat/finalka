@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
 import '../components/item_details.dart';
-import '../components/restaurant_item.dart';
-import '../models/cart_manager.dart';
-import '../models/order_manager.dart';
-import '../models/restaurant.dart';
+import '../components/exercise_item.dart';
+import '../models/workout_manager.dart';
+import '../models/plan_manager.dart';
+import '../models/gym.dart';
 import 'checkout_page.dart';
 
 class RestaurantPage extends StatefulWidget {
-  final Restaurant restaurant;
+  final Gym restaurant;
   final CartManager cartManager;
   final OrderManager ordersManager;
 
@@ -179,7 +179,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
     );
   }
 
-  void _showBottomSheet(Item item) {
+  void _showBottomSheet(ExerciseItem item) {
     showModalBottomSheet<void>(
       isScrollControlled: true,
       context: context,

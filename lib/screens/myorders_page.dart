@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../models/order_manager.dart';
+import '../models/plan_manager.dart';
 
 class MyOrdersPage extends StatelessWidget {
   final OrderManager orderManager;
@@ -34,7 +34,7 @@ class MyOrdersPage extends StatelessWidget {
 }
 
 class OrderTile extends StatelessWidget {
-  final Order order;
+  final WorkoutPlan order;
 
   const OrderTile({
     super.key,

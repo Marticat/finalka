@@ -4,8 +4,8 @@ import 'screens/profile_page.dart';
 import 'components/color_button.dart';
 import 'components/theme_button.dart';
 import 'constants.dart';
-import 'models/cart_manager.dart';
-import 'models/order_manager.dart';
+import 'models/workout_manager.dart';
+import 'models/plan_manager.dart';
 import 'screens/explore_page.dart';
 import 'screens/myorders_page.dart';
 

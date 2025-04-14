@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import '../api/mock_yummy_service.dart';
 import '../components/category_section.dart';
 import '../components/post_section.dart';
-import '../components/restaurant_section.dart';
-import '../models/cart_manager.dart';
-import '../models/order_manager.dart';
+import '../components/gym_section.dart';
+import '../models/workout_manager.dart';
+import '../models/plan_manager.dart';
 
 import '../screens/exercise_list_page.dart';
 

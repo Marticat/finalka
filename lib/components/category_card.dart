@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../models/food_category.dart';
+import '../models/exercise_category.dart';
 
 class CategoryCard extends StatelessWidget {
-  final FoodCategory category;
+  final ExerciseCategory category;
   final VoidCallback onTap;
 
   const CategoryCard({

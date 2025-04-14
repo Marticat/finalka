@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'cart_manager.dart';
+import 'workout_manager.dart';
 
-class Order {
+class WorkoutPlan {
   final Set<int> selectedSegment;
   final TimeOfDay? selectedTime;
   final DateTime? selectedDate;
   final String name;
   final List<CartItem> items;
 
-  Order({
+  WorkoutPlan({
     required this.selectedSegment,
     required this.selectedTime,
     required this.selectedDate,
@@ -62,15 +62,15 @@ class Order {
 }
 
 class OrderManager {
-  final List<Order> _orders = [];
+  final List<WorkoutPlan> _orders = [];
 
-  List<Order> get orders => _orders; // Getter to access the orders
+  List<WorkoutPlan> get orders => _orders; // Getter to access the orders
 
-  void addOrder(Order order) {
+  void addOrder(WorkoutPlan order) {
     _orders.add(order);
   }
 
-  void removeOrder(Order order) {
+  void removeOrder(WorkoutPlan order) {
     _orders.remove(order);
   }
 

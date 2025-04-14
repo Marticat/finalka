@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-import '../components/restaurant_landscape_card.dart';
-import '../models/cart_manager.dart';
-import '../models/order_manager.dart';
-import '../models/restaurant.dart';
-import '../screens/restaurant_page.dart';
+import '../components/gym_landscape_card.dart';
+import '../models/workout_manager.dart';
+import '../models/plan_manager.dart';
+import '../models/gym.dart';
+import '../screens/gym_page.dart';
 
 class RestaurantSection extends StatelessWidget {
-  final List<Restaurant> restaurants;
+  final List<Gym> restaurants;
   final CartManager cartManager;
   final OrderManager orderManager;
 

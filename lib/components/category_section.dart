@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import '../components/category_card.dart';
-import '../models/food_category.dart';
+import '../models/exercise_category.dart';
 
 class CategorySection extends StatelessWidget {
-  final List<FoodCategory> categories;
-  final void Function(FoodCategory)? onCategoryTap;
+  final List<ExerciseCategory> categories;
+  final void Function(ExerciseCategory)? onCategoryTap;
 
   const CategorySection({
     super.key,

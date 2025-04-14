@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../models/restaurant.dart';
+import '../models/gym.dart';
 
 class RestaurantLandscapeCard extends StatefulWidget {
-  final Restaurant restaurant;
+  final Gym restaurant;
   final Function() onTap;
 
   const RestaurantLandscapeCard({

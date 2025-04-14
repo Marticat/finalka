@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'constants.dart';
 import 'home.dart';
-import 'models/cart_manager.dart';
-import 'models/order_manager.dart';
+import 'models/workout_manager.dart';
+import 'models/plan_manager.dart';
 
 void main() {
   runApp(const Yummy());
