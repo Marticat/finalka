@@ -24,7 +24,7 @@ class _YummyState extends State<Yummy> {
   final CartManager _cartManager = CartManager();
 
   /// Manage user's orders submitted
-  final OrderManager _orderManager = OrderManager();
+  final PlanManager _orderManager = PlanManager();
 
   void changeThemeMode(bool useLightMode) {
     setState(() {

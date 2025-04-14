@@ -12,7 +12,7 @@ import '../screens/exercise_list_page.dart';
 class ExplorePage extends StatelessWidget {
   final mockService = MockYummyService();
   final CartManager cartManager;
-  final OrderManager orderManager;
+  final PlanManager orderManager;
 
   ExplorePage({
     super.key,

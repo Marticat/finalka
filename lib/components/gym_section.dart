@@ -9,7 +9,7 @@ import '../screens/gym_page.dart';
 class RestaurantSection extends StatelessWidget {
   final List<Gym> restaurants;
   final CartManager cartManager;
-  final OrderManager orderManager;
+  final PlanManager orderManager;
 
   const RestaurantSection({
     super.key,

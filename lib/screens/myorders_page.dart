@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/plan_manager.dart';
 
 class MyOrdersPage extends StatelessWidget {
-  final OrderManager orderManager;
+  final PlanManager orderManager;
 
   const MyOrdersPage({
     super.key,

@@ -21,7 +21,7 @@ class Home extends StatefulWidget {
   });
 
   final CartManager cartManager;
-  final OrderManager ordersManager;
+  final PlanManager ordersManager;
   final ColorSelection colorSelected;
   final void Function(bool useLightMode) changeTheme;
   final void Function(int value) changeColor;

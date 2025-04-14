@@ -1,12 +1,319 @@
 import 'package:flutter/material.dart';
+import '../models/exercise.dart';
+import '../models/plan_manager.dart';
 
-class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
+class ProfilePage extends StatefulWidget {
+  final PlanManager? planManager;
+
+  const ProfilePage({super.key, this.planManager});
+
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  final List<Exercise> _plannedExercises = [];
+  final _formKey = GlobalKey<FormState>();
+  final _exerciseNameController = TextEditingController();
+  final _caloriesController = TextEditingController();
+  final _durationController = TextEditingController();
+  String _selectedCategory = 'Strength';
+  String _selectedDifficulty = 'Beginner';
+
+  @override
+  void dispose() {
+    _exerciseNameController.dispose();
+    _caloriesController.dispose();
+    _durationController.dispose();
+    super.dispose();
+  }
+
+  void _addExercise() {
+    if (_formKey.currentState!.validate()) {
+      setState(() {
+        _plannedExercises.add(Exercise(
+          id: DateTime.now().toString(),
+          name: _exerciseNameController.text,
+          description: 'Planned exercise',
+          imageUrl: 'assets/categories/strength.png',
+          difficulty: _selectedDifficulty,
+          duration: int.parse(_durationController.text),
+          calories: int.parse(_caloriesController.text),
+          instructions: [],
+          targetMuscles: [],
+          category: _selectedCategory,
+        ));
+      });
+      _clearForm();
+      Navigator.pop(context);
+    }
+  }
+
+  void _clearForm() {
+    _exerciseNameController.clear();
+    _caloriesController.clear();
+    _durationController.clear();
+  }
+
+  void _showAddExerciseDialog() {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Add Planned Exercise'),
+        content: Form(
+          key: _formKey,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextFormField(
+                  controller: _exerciseNameController,
+                  decoration: const InputDecoration(labelText: 'Exercise Name'),
+                  validator: (value) => value!.isEmpty ? 'Required' : null,
+                ),
+                TextFormField(
+                  controller: _caloriesController,
+                  decoration: const InputDecoration(labelText: 'Calories'),
+                  keyboardType: TextInputType.number,
+                  validator: (value) => value!.isEmpty ? 'Required' : null,
+                ),
+                TextFormField(
+                  controller: _durationController,
+                  decoration: const InputDecoration(labelText: 'Duration (mins)'),
+                  keyboardType: TextInputType.number,
+                  validator: (value) => value!.isEmpty ? 'Required' : null,
+                ),
+                DropdownButtonFormField<String>(
+                  value: _selectedCategory,
+                  items: ['Strength', 'Cardio', 'HIIT', 'Yoga', 'Mobility']
+                      .map((category) => DropdownMenuItem(
+                    value: category,
+                    child: Text(category),
+                  ))
+                      .toList(),
+                  onChanged: (value) => setState(() => _selectedCategory = value!),
+                  decoration: const InputDecoration(labelText: 'Category'),
+                ),
+                DropdownButtonFormField<String>(
+                  value: _selectedDifficulty,
+                  items: ['Beginner', 'Intermediate', 'Advanced']
+                      .map((level) => DropdownMenuItem(
+                    value: level,
+                    child: Text(level),
+                  ))
+                      .toList(),
+                  onChanged: (value) => setState(() => _selectedDifficulty = value!),
+                  decoration: const InputDecoration(labelText: 'Difficulty'),
+                ),
+              ],
+            ),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: _addExercise,
+            child: const Text('Add'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildExercisePlanCard(Exercise exercise) {
+    return Card(
+      child: ListTile(
+        leading: const Icon(Icons.fitness_center),
+        title: Text(exercise.name),
+        subtitle: Text('${exercise.calories} cal • ${exercise.duration} mins • ${exercise.category}'),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              icon: const Icon(Icons.edit),
+              onPressed: () => _editExercise(exercise),
+            ),
+            IconButton(
+              icon: const Icon(Icons.delete),
+              onPressed: () => _deleteExercise(exercise),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _editExercise(Exercise exercise) {
+    _exerciseNameController.text = exercise.name;
+    _caloriesController.text = exercise.calories.toString();
+    _durationController.text = exercise.duration.toString();
+    _selectedCategory = exercise.category;
+    _selectedDifficulty = exercise.difficulty;
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Edit Exercise'),
+        content: Form(
+          key: _formKey,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextFormField(
+                  controller: _exerciseNameController,
+                  decoration: const InputDecoration(labelText: 'Exercise Name'),
+                  validator: (value) => value!.isEmpty ? 'Required' : null,
+                ),
+                TextFormField(
+                  controller: _caloriesController,
+                  decoration: const InputDecoration(labelText: 'Calories'),
+                  keyboardType: TextInputType.number,
+                  validator: (value) => value!.isEmpty ? 'Required' : null,
+                ),
+                TextFormField(
+                  controller: _durationController,
+                  decoration: const InputDecoration(labelText: 'Duration (mins)'),
+                  keyboardType: TextInputType.number,
+                  validator: (value) => value!.isEmpty ? 'Required' : null,
+                ),
+                DropdownButtonFormField<String>(
+                  value: _selectedCategory,
+                  items: ['Strength', 'Cardio', 'HIIT', 'Yoga', 'Mobility']
+                      .map((category) => DropdownMenuItem(
+                    value: category,
+                    child: Text(category),
+                  ))
+                      .toList(),
+                  onChanged: (value) => setState(() => _selectedCategory = value!),
+                  decoration: const InputDecoration(labelText: 'Category'),
+                ),
+                DropdownButtonFormField<String>(
+                  value: _selectedDifficulty,
+                  items: ['Beginner', 'Intermediate', 'Advanced']
+                      .map((level) => DropdownMenuItem(
+                    value: level,
+                    child: Text(level),
+                  ))
+                      .toList(),
+                  onChanged: (value) => setState(() => _selectedDifficulty = value!),
+                  decoration: const InputDecoration(labelText: 'Difficulty'),
+                ),
+              ],
+            ),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              if (_formKey.currentState!.validate()) {
+                final index = _plannedExercises.indexOf(exercise);
+                setState(() {
+                  _plannedExercises[index] = Exercise(
+                    id: exercise.id,
+                    name: _exerciseNameController.text,
+                    description: exercise.description,
+                    imageUrl: exercise.imageUrl,
+                    difficulty: _selectedDifficulty,
+                    duration: int.parse(_durationController.text),
+                    calories: int.parse(_caloriesController.text),
+                    instructions: exercise.instructions,
+                    targetMuscles: exercise.targetMuscles,
+                    category: _selectedCategory,
+                  );
+                });
+                _clearForm();
+                Navigator.pop(context);
+              }
+            },
+            child: const Text('Save'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _deleteExercise(Exercise exercise) {
+    setState(() {
+      _plannedExercises.remove(exercise);
+    });
+  }
+
+  Widget _buildProfileHeader(BuildContext context) {
+    return Row(
+      children: [
+        const CircleAvatar(
+          radius: 40,
+          backgroundImage: AssetImage('assets/profile_pics/person_cesare.jpeg'),
+        ),
+        const SizedBox(width: 16),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("Your Profile", style: Theme.of(context).textTheme.titleLarge),
+            Text("Fitness Enthusiast", style: Theme.of(context).textTheme.bodyMedium),
+          ],
+        )
+      ],
+    );
+  }
+
+  Widget _buildProgressSection(BuildContext context) {
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            LinearProgressIndicator(
+              value: _plannedExercises.isEmpty ? 0 : 0.5,
+              semanticsLabel: 'Progress',
+            ),
+            const SizedBox(height: 8),
+            Text(
+              "Workout Progress",
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            Text(
+              _plannedExercises.isEmpty
+                  ? "Start adding exercises!"
+                  : "${_plannedExercises.length} exercises planned",
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCardSection({required String title, required List<Widget> children}) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 16),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            ...children,
+          ],
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final textTheme = theme.textTheme;
 
     return Scaffold(
       appBar: AppBar(
@@ -14,6 +321,12 @@ class ProfilePage extends StatelessWidget {
         centerTitle: true,
         backgroundColor: theme.colorScheme.primary,
         foregroundColor: theme.colorScheme.onPrimary,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: _showAddExerciseDialog,
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -25,128 +338,44 @@ class ProfilePage extends StatelessWidget {
             _buildProgressSection(context),
             const SizedBox(height: 24),
             _buildCardSection(
-              title: "Achievements",
-              children: const [
-                ListTile(title: Text("🏅 Completed 30-day push-up challenge")),
-                ListTile(title: Text("🏋️‍♂️ New PR: 120kg deadlift")),
-                ListTile(title: Text("🔥 Logged workouts 10 days in a row")),
-              ],
+              title: "My Exercise Plan",
+              children: _plannedExercises.isEmpty
+                  ? [
+                const ListTile(
+                  title: Text("No exercises planned yet"),
+                  subtitle: Text("Tap + to add exercises"),
+                )
+              ]
+                  : _plannedExercises.map(_buildExercisePlanCard).toList(),
             ),
             const SizedBox(height: 24),
             _buildCardSection(
               title: "Workout Stats",
-              children: const [
-                ListTile(title: Text("Total Workouts: 85")),
-                ListTile(title: Text("Calories Burned: 23,000 kcal")),
-                ListTile(title: Text("Hours Trained: 110 hrs")),
+              children: [
+                ListTile(
+                  leading: const Icon(Icons.local_fire_department),
+                  title: const Text("Total Calories"),
+                  subtitle: Text(
+                    "${_plannedExercises.fold(0, (sum, ex) => sum + ex.calories)} cal",
+                  ),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.timer),
+                  title: const Text("Total Duration"),
+                  subtitle: Text(
+                    "${_plannedExercises.fold(0, (sum, ex) => sum + ex.duration)} mins",
+                  ),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.fitness_center),
+                  title: const Text("Exercises Count"),
+                  subtitle: Text("${_plannedExercises.length} exercises"),
+                ),
               ],
             ),
-            const SizedBox(height: 24),
-            _buildFriendsSection(),
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildProfileHeader(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-
-    return Row(
-      children: [
-        const CircleAvatar(
-          radius: 40,
-          backgroundImage: AssetImage('assets/profile_pics/person_cesare.jpeg'),
-        ),
-        const SizedBox(width: 16),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("John Doe", style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold)),
-            Text("Fitness Enthusiast", style: textTheme.bodyMedium),
-          ],
-        )
-      ],
-    );
-  }
-
-  Widget _buildProgressSection(BuildContext context) {
-    final color = Theme.of(context).colorScheme;
-
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("Progress", style: Theme.of(context).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold)),
-            const SizedBox(height: 12),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: LinearProgressIndicator(
-                value: 0.7,
-                minHeight: 10,
-                backgroundColor: color.surfaceVariant,
-                valueColor: AlwaysStoppedAnimation(color.primary),
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text("70% towards muscle mass goal", style: Theme.of(context).textTheme.bodySmall),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildCardSection({required String title, required List<Widget> children}) {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Text(title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            ),
-            const SizedBox(height: 8),
-            ...children,
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildFriendsSection() {
-    return _buildCardSection(
-      title: "Friends",
-      children: const [
-        ListTile(
-          leading: CircleAvatar(
-            backgroundImage: AssetImage('assets/profile_pics/friend_anna.jpg'),
-          ),
-          title: Text("Anna Smith"),
-          subtitle: Text("🏃‍♀️ 5K run today"),
-        ),
-        ListTile(
-          leading: CircleAvatar(
-            backgroundImage: AssetImage('assets/profile_pics/friend_bob.jpg'),
-          ),
-          title: Text("Bob Johnson"),
-          subtitle: Text("💪 Just hit a new PR!"),
-        ),
-        ListTile(
-          leading: CircleAvatar(
-            backgroundImage: AssetImage('assets/profile_pics/friend_emma.jpg'),
-          ),
-          title: Text("Emma Davis"),
-          subtitle: Text("🔥 7 days workout streak"),
-        ),
-      ],
     );
   }
 }

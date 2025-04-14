@@ -61,7 +61,7 @@ class WorkoutPlan {
   }
 }
 
-class OrderManager {
+class PlanManager {
   final List<WorkoutPlan> _orders = [];
 
   List<WorkoutPlan> get orders => _orders; // Getter to access the orders

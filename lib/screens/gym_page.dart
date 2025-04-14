@@ -10,7 +10,7 @@ import 'checkout_page.dart';
 class RestaurantPage extends StatefulWidget {
   final Gym restaurant;
   final CartManager cartManager;
-  final OrderManager ordersManager;
+  final PlanManager ordersManager;
 
   const RestaurantPage({
     super.key,
