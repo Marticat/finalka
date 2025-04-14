@@ -73,7 +73,7 @@ List<Restaurant> restaurants = [
         '''Upper body strength exercise focusing on back and biceps using body weight.''',
         price: 0.0, // бесплатное упражнение
         imageUrl:
-        'https://images.unsplash.com/photo-1598970434795-0c54fe7c0642?auto=format&fit=crop&w=930&q=80',
+        'https://barbend.com/wp-content/uploads/2024/05/never-start-back-workouts-with-pull-ups-1713758245.jpg',
       ),
       Item(
         name: 'Push-Ups',
