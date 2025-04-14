@@ -18,7 +18,7 @@ class Yummy extends StatefulWidget {
 
 class _YummyState extends State<Yummy> {
   ThemeMode themeMode = ThemeMode.light;
-  ColorSelection colorSelected = ColorSelection.pink;
+  ColorSelection colorSelected = ColorSelection.red;
 
   /// Manage user's shopping cart for the items they order.
   final CartManager _cartManager = CartManager();
@@ -42,7 +42,7 @@ class _YummyState extends State<Yummy> {
 
   @override
   Widget build(BuildContext context) {
-    const appTitle = 'Gym';
+    const appTitle = 'GymFit';
 
     return MaterialApp(
       title: appTitle,

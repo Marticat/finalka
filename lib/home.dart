@@ -36,7 +36,7 @@ class _HomeState extends State<Home> {
   List<NavigationDestination> appBarDestinations = const [
     NavigationDestination(
       icon: Icon(Icons.home_outlined),
-      label: 'Explore',
+      label: 'Home',
       selectedIcon: Icon(Icons.home),
     ),
     NavigationDestination(

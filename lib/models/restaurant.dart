@@ -65,7 +65,7 @@ List<Restaurant> restaurants = [
         '''Great compound exercise for building lower body strength, targeting quads, hamstrings, and glutes.''',
         price: 0.0, // бесплатное упражнение
         imageUrl:
-        'https://images.unsplash.com/photo-1603489491897-d93b1fcbf92f?auto=format&fit=crop&w=774&q=80',
+        'https://www.tonal.com/wp-content/uploads/2023/03/Bodyweight-Squat.jpg?resize=576%2C576',
       ),
       Item(
         name: 'Pull-Ups',
@@ -81,7 +81,7 @@ List<Restaurant> restaurants = [
         '''Classic bodyweight exercise for building upper body strength, particularly chest and triceps.''',
         price: 0.0, // бесплатное упражнение
         imageUrl:
-        'https://images.unsplash.com/photo-1604130523536-cf372d5f9746?auto=format&fit=crop&w=1470&q=80',
+        'https://www.endomondo.com/wp-content/uploads/2024/08/Benefits-of-Push-Ups.jpg',
       ),
     ],
   ),
@@ -101,7 +101,7 @@ List<Restaurant> restaurants = [
         '''A key exercise for building chest strength, using a barbell for pressing movements.''',
         price: 0.0, // бесплатное упражнение
         imageUrl:
-        'https://images.unsplash.com/photo-1614093973082-ec44b3168f89?auto=format&fit=crop&w=930&q=80',
+        'https://www.anytimefitness.com/wp-content/uploads/2024/01/AF-HERO_BenchPress-1024x683.jpg',
       ),
       Item(
         name: 'Yoke Walk',
@@ -109,7 +109,7 @@ List<Restaurant> restaurants = [
         '''Strongman event that works your entire body with a heavy weight carried on your shoulders.''',
         price: 0.0, // бесплатное упражнение
         imageUrl:
-        'https://images.unsplash.com/photo-1583454045992-01a0f04c3c4c?auto=format&fit=crop&w=930&q=80',
+        'https://www.frontiersin.org/files/Articles/670297/fspor-03-670297-HTML/image_m/fspor-03-670297-g001.jpg',
       ),
       Item(
         name: 'Overhead Press',
@@ -117,7 +117,7 @@ List<Restaurant> restaurants = [
         '''Build upper body strength and shoulder stability with this compound movement.''',
         price: 0.0, // бесплатное упражнение
         imageUrl:
-        'https://images.unsplash.com/photo-1587614102660-61649f7c39c8?auto=format&fit=crop&w=1470&q=80',
+        'https://images.squarespace-cdn.com/content/v1/5d53668c6636c10001f5d9b3/1729025101429-OUGFDILFME73SBVYMP8L/pexels-ketut-subiyanto-4720789.jpg?format=1000w',
       ),
       Item(
         name: 'Farmers Walk',
@@ -125,7 +125,7 @@ List<Restaurant> restaurants = [
         '''Another strongman training movement focusing on grip strength and full body conditioning.''',
         price: 0.0, // бесплатное упражнение
         imageUrl:
-        'https://images.unsplash.com/photo-1575282506070-4c6025b67471?auto=format&fit=crop&w=930&q=80',
+        'https://hips.hearstapps.com/hmg-prod/images/farmers-walk-1601465939.jpg',
       ),
     ],
   ),
@@ -145,7 +145,7 @@ List<Restaurant> restaurants = [
         '''A high-intensity bodyweight exercise that works your full body, improving cardiovascular endurance.''',
         price: 0.0, // бесплатное упражнение
         imageUrl:
-        'https://images.unsplash.com/photo-1600488994736-596af9009a4e?auto=format&fit=crop&w=930&q=80',
+        'https://i0.wp.com/www.muscleandfitness.com/wp-content/uploads/2017/04/burpee-1109.jpg?w=1300&h=731&crop=1&quality=86&strip=all',
       ),
       Item(
         name: 'Kettlebell Swings',
@@ -153,7 +153,7 @@ List<Restaurant> restaurants = [
         '''A powerful hip movement using a kettlebell, great for posterior chain development and conditioning.''',
         price: 0.0, // бесплатное упражнение
         imageUrl:
-        'https://images.unsplash.com/photo-1583454045992-01a0f04c3c4c?auto=format&fit=crop&w=930&q=80',
+        'https://images.squarespace-cdn.com/content/v1/5a039e7332601eca495b1fe4/b1d1946e-69d3-44cf-8b71-3613652bc0eb/KBA+Deadstop+Swing.jpg',
       ),
       Item(
         name: 'Box Jumps',
@@ -161,7 +161,7 @@ List<Restaurant> restaurants = [
         '''An explosive movement to improve lower body power and agility by jumping onto a raised platform.''',
         price: 0.0, // бесплатное упражнение
         imageUrl:
-        'https://images.unsplash.com/photo-1588618904795-058d879d1c27?auto=format&fit=crop&w=930&q=80',
+        'https://hips.hearstapps.com/hmg-prod/images/box-jump-1585302208.jpeg',
       ),
       Item(
         name: 'Double-Unders',
@@ -169,7 +169,7 @@ List<Restaurant> restaurants = [
         '''A jump rope skill focusing on endurance and agility, performed with the rope passing under the feet twice.''',
         price: 0.0, // бесплатное упражнение
         imageUrl:
-        'https://images.unsplash.com/photo-1603204443134-ec07e40061f1?auto=format&fit=crop&w=930&q=80',
+        'https://i.ytimg.com/vi/82jNjDS19lg/maxresdefault.jpg',
       ),
     ],
   ),
