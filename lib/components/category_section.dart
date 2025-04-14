@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
-
 import '../components/category_card.dart';
 import '../models/food_category.dart';
 
 class CategorySection extends StatelessWidget {
   final List<FoodCategory> categories;
+  final void Function(FoodCategory)? onCategoryTap;
+
   const CategorySection({
     super.key,
     required this.categories,
+    this.onCategoryTap,
   });
 
   @override
@@ -33,9 +35,17 @@ class CategorySection extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               itemCount: categories.length,
               itemBuilder: (context, index) {
+                final category = categories[index];
                 return SizedBox(
                   width: 200,
-                  child: CategoryCard(category: categories[index]),
+                  child: CategoryCard(
+                    category: category,
+                    onTap: () {
+                      if (onCategoryTap != null) {
+                        onCategoryTap!(category);
+                      }
+                    },
+                  ),
                 );
               },
             ),

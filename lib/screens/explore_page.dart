@@ -7,6 +7,8 @@ import '../components/restaurant_section.dart';
 import '../models/cart_manager.dart';
 import '../models/order_manager.dart';
 
+import '../screens/exercise_list_page.dart';
+
 class ExplorePage extends StatelessWidget {
   final mockService = MockYummyService();
   final CartManager cartManager;
@@ -54,19 +56,20 @@ class ExplorePage extends StatelessWidget {
                   margin: const EdgeInsets.only(bottom: 24),
                   child: Padding(
                     padding: const EdgeInsets.all(12),
-                    child: CategorySection(categories: categories),
+                    child: CategorySection(
+                      categories: categories,
+                      onCategoryTap: (category) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ExerciseListPage(category: category.name),
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ),
-                SectionHeader(title: 'Share,React'),
-                Card(
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                  elevation: 2,
-                  margin: const EdgeInsets.only(bottom: 24),
-                  child: Padding(
-                    padding: const EdgeInsets.all(12),
-                    child: PostSection(posts: posts),
-                  ),
-                ),
+
               ],
             );
           } else {
