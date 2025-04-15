@@ -162,7 +162,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 ),
               ),
               title: Text(item.name),
-              subtitle: Text('Calories: \$${item.price}'),
+              subtitle: Text('Calories: '),
             ),
           );
         },
@@ -193,7 +193,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Text(
-            '''Accept plan - \$${widget.cartManager.totalCost.toStringAsFixed(2)}'''),
+            '''Accept plan'''),
       ),
     );
   }

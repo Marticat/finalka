@@ -61,7 +61,7 @@ class _ItemDetailsState extends State<ItemDetails> {
       child: Container(
         padding: const EdgeInsets.all(4.0),
         color: colorTheme.onPrimary,
-        child: const Text('#1 Most Liked'),
+        child: const Text(''),
       ),
     );
   }
