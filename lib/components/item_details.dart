@@ -41,8 +41,6 @@ class _ItemDetailsState extends State<ItemDetails> {
                 style: textTheme.headlineMedium,
               ),
               const SizedBox(height: 16.0),
-              _mostLikedBadge(colorTheme),
-              const SizedBox(height: 16.0),
               Text(widget.item.description),
               const SizedBox(height: 16.0),
               _itemImage(widget.item.imageUrl),
@@ -55,16 +53,7 @@ class _ItemDetailsState extends State<ItemDetails> {
     );
   }
 
-  Widget _mostLikedBadge(ColorScheme colorTheme) {
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: Container(
-        padding: const EdgeInsets.all(4.0),
-        color: colorTheme.onPrimary,
-        child: const Text(''),
-      ),
-    );
-  }
+
 
   Widget _itemImage(String imageUrl) {
     return Container(

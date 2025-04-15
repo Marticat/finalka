@@ -220,7 +220,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
     return FloatingActionButton.extended(
       onPressed: openDrawer,
       tooltip: 'List',
-      icon: const Icon(Icons.shopping_cart),
+      icon: const Icon(Icons.fitness_center_sharp),
       label: Text('${widget.workoutManager.items.length} Exercises to do'),
     );
   }

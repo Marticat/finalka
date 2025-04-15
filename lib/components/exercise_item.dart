@@ -58,7 +58,7 @@ class GymItem extends StatelessWidget {
         const Icon(
           Icons.thumb_up,
           color: Colors.green,
-          size: 18,
+          size: 1,
         ),
       ],
     );
