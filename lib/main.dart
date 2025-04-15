@@ -6,17 +6,17 @@ import 'models/workout_manager.dart';
 import 'models/plan_manager.dart';
 
 void main() {
-  runApp(const Yummy());
+  runApp(const GymFit());
 }
 
-class Yummy extends StatefulWidget {
-  const Yummy({super.key});
+class GymFit extends StatefulWidget {
+  const GymFit({super.key});
 
   @override
-  State<Yummy> createState() => _YummyState();
+  State<GymFit> createState() => _GymFitState();
 }
 
-class _YummyState extends State<Yummy> {
+class _GymFitState extends State<GymFit> {
   ThemeMode themeMode = ThemeMode.light;
   ColorSelection colorSelected = ColorSelection.red;
 
