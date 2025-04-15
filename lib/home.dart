@@ -68,7 +68,7 @@ class _HomeState extends State<Home> {
         planManager: widget.planManager,
       ),
       MyOrdersPage(planManager: widget.planManager),
-      MealPlanScreen(),
+      FoodSearchScreen(),
       const ProfilePage(), // ← this is new
     ];
 
