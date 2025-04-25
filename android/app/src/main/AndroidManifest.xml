@@ -12,7 +12,7 @@
         <!-- 👇 Добавлено: API ключ -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCyVkvKOiUY8dS2YPoz75cF4PBca9tI5oA"/>
+            android:value=""/>
 
         <activity
             android:name=".MainActivity"
