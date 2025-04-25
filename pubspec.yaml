@@ -10,9 +10,12 @@ environment:
 
 dependencies:
   http: ^0.13.6
+  google_maps_flutter: ^2.2.3
+  geolocator: ^14.0.0
+  geocoding: ^2.1.1
   flutter:
     sdk: flutter
-  uuid: ^3.0.0
+  uuid: 4.5.1
   intl: ^0.18.0
   cupertino_icons: ^1.0.8
 
@@ -21,6 +24,8 @@ dev_dependencies:
     sdk: flutter
 
   flutter_lints: ^5.0.0
+dependency_overrides:
+  geolocator_android: ^5.0.1
 
 flutter:
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'screens/profile_page.dart';
-
+import 'screens/map_screen.dart';
 import 'components/color_button.dart';
 import 'components/theme_button.dart';
 import 'constants.dart';
@@ -10,6 +10,7 @@ import 'screens/explore_page.dart';
 import 'screens/myorders_page.dart';
 import 'screens/food_search_screen.dart';
 import 'screens/meal_plan_screen.dart';
+
 
 
 
@@ -54,6 +55,11 @@ class _HomeState extends State<Home> {
       selectedIcon: Icon(Icons.restaurant),
     ),
     NavigationDestination(
+      icon: Icon(Icons.map_outlined),
+      label: 'Map',
+      selectedIcon: Icon(Icons.map),
+    ),
+    NavigationDestination(
       icon: Icon(Icons.person_2_outlined),
       label: 'Account',
       selectedIcon: Icon(Icons.person),
@@ -69,6 +75,7 @@ class _HomeState extends State<Home> {
       ),
       MyOrdersPage(planManager: widget.planManager),
       FoodSearchScreen(),
+      MapScreen(),
       const ProfilePage(), // ← this is new
     ];
 
