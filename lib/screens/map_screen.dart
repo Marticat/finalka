@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:flutter/services.dart'; // For clipboard
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
@@ -16,6 +17,7 @@ class _MapScreenState extends State<MapScreen> {
   LatLng? _currentPosition;
   final Set<Marker> _markers = {};
   String _currentAddress = '';
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
@@ -24,36 +26,49 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   Future<void> _getCurrentLocation() async {
-    bool serviceEnabled;
-    LocationPermission permission;
-
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      return;
-    }
-
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
+    try {
+      // Check if location services are enabled
+      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Please enable location services')),
+        );
         return;
       }
+
+      // Check location permissions
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Location permissions are denied')),
+          );
+          return;
+        }
+      }
+
+      if (permission == LocationPermission.deniedForever) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Location permissions are permanently denied')),
+        );
+        return;
+      }
+
+      // Get current position
+      Position position = await Geolocator.getCurrentPosition();
+      setState(() {
+        _currentPosition = LatLng(position.latitude, position.longitude);
+      });
+
+      // Get address and add gym markers
+      await _getAddressFromLatLng(_currentPosition!);
+      _addGymMarkers();
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error getting location: ${e.toString()}')),
+      );
     }
-
-    if (permission == LocationPermission.deniedForever) {
-      return;
-    }
-
-    Position position = await Geolocator.getCurrentPosition();
-    setState(() {
-      _currentPosition = LatLng(position.latitude, position.longitude);
-    });
-
-    // Get address from coordinates
-    await _getAddressFromLatLng(_currentPosition!);
-
-    // Add markers for nearby gyms (using your existing gyms data)
-    _addGymMarkers();
   }
 
   Future<void> _getAddressFromLatLng(LatLng position) async {
@@ -63,14 +78,52 @@ class _MapScreenState extends State<MapScreen> {
         position.longitude,
       );
 
-      Placemark place = placemarks[0];
-
-      setState(() {
-        _currentAddress =
-        "${place.street}, ${place.locality}, ${place.postalCode}, ${place.country}";
-      });
+      if (placemarks.isNotEmpty) {
+        Placemark place = placemarks.first;
+        setState(() {
+          _currentAddress = [
+            place.street,
+            place.locality,
+            place.postalCode,
+            place.country
+          ].where((part) => part != null && part.isNotEmpty).join(', ');
+        });
+      }
     } catch (e) {
-      print(e);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error getting address: ${e.toString()}')),
+      );
+    }
+  }
+
+  Future<void> _searchLocation() async {
+    if (_searchController.text.isEmpty) return;
+
+    try {
+      List<Location> locations = await locationFromAddress(_searchController.text);
+
+      if (locations.isNotEmpty) {
+        final location = locations.first;
+        final newPosition = LatLng(location.latitude, location.longitude);
+
+        setState(() {
+          _currentPosition = newPosition;
+        });
+
+        mapController.animateCamera(
+          CameraUpdate.newLatLngZoom(newPosition, 15),
+        );
+
+        await _getAddressFromLatLng(newPosition);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('No results found for "${_searchController.text}"')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error searching location: ${e.toString()}')),
+      );
     }
   }
 
@@ -92,7 +145,6 @@ class _MapScreenState extends State<MapScreen> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -101,26 +153,47 @@ class _MapScreenState extends State<MapScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.my_location),
-            onPressed: () {
-              if (_currentPosition != null) {
-                mapController.animateCamera(
-                  CameraUpdate.newLatLngZoom(_currentPosition!, 15),
-                );
-              }
-            },
+            onPressed: _getCurrentLocation,
           ),
         ],
       ),
       body: Column(
         children: [
+          // Search bar
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              controller: _searchController,
+              decoration: InputDecoration(
+                hintText: 'Search for a location (e.g., Astana)',
+                border: OutlineInputBorder(),
+                suffixIcon: IconButton(
+                  icon: const Icon(Icons.search),
+                  onPressed: _searchLocation,
+                ),
+              ),
+              onSubmitted: (value) => _searchLocation(),
+            ),
+          ),
+
+          // Current location address
           if (_currentAddress.isNotEmpty)
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                'Your location: $_currentAddress',
-                style: Theme.of(context).textTheme.bodyMedium,
+            ListTile(
+              leading: Icon(Icons.location_pin),
+              title: Text('Your Location'),
+              subtitle: Text(_currentAddress),
+              trailing: IconButton(
+                icon: Icon(Icons.copy),
+                onPressed: () {
+                  Clipboard.setData(ClipboardData(text: _currentAddress));
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Address copied to clipboard')),
+                  );
+                },
               ),
             ),
+
+          // Map
           Expanded(
             child: _currentPosition == null
                 ? const Center(child: CircularProgressIndicator())
@@ -141,9 +214,6 @@ class _MapScreenState extends State<MapScreen> {
               scrollGesturesEnabled: true,
               rotateGesturesEnabled: true,
               tiltGesturesEnabled: true,
-              onTap: (latLng) {
-                // Handle map taps if needed
-              },
             ),
           ),
         ],
@@ -154,9 +224,7 @@ class _MapScreenState extends State<MapScreen> {
           FloatingActionButton(
             heroTag: 'zoomIn',
             onPressed: () {
-              mapController.animateCamera(
-                CameraUpdate.zoomIn(),
-              );
+              mapController.animateCamera(CameraUpdate.zoomIn());
             },
             child: const Icon(Icons.add),
           ),
@@ -164,9 +232,7 @@ class _MapScreenState extends State<MapScreen> {
           FloatingActionButton(
             heroTag: 'zoomOut',
             onPressed: () {
-              mapController.animateCamera(
-                CameraUpdate.zoomOut(),
-              );
+              mapController.animateCamera(CameraUpdate.zoomOut());
             },
             child: const Icon(Icons.remove),
           ),
