@@ -1,11 +1,16 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-
-import 'constants.dart';
+import 'package:finalka/services/auth_screen.dart';
+import 'package:finalka/services/auth_service.dart';
 import 'home.dart';
 import 'models/workout_manager.dart';
 import 'models/plan_manager.dart';
+import 'constants.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const GymFit());
 }
 
@@ -17,20 +22,15 @@ class GymFit extends StatefulWidget {
 }
 
 class _GymFitState extends State<GymFit> {
+  final AuthService _auth = AuthService();
   ThemeMode themeMode = ThemeMode.light;
   ColorSelection colorSelected = ColorSelection.red;
-
-  /// Manage user's shopping cart for the items they order.
   final CartManager _cartManager = CartManager();
-
-  /// Manage user's orders submitted
   final PlanManager _orderManager = PlanManager();
 
   void changeThemeMode(bool useLightMode) {
     setState(() {
-      themeMode = useLightMode
-          ? ThemeMode.light //
-          : ThemeMode.dark;
+      themeMode = useLightMode ? ThemeMode.light : ThemeMode.dark;
     });
   }
 
@@ -46,7 +46,7 @@ class _GymFitState extends State<GymFit> {
 
     return MaterialApp(
       title: appTitle,
-      debugShowCheckedModeBanner: false, // Uncomment to remove Debug banner
+      debugShowCheckedModeBanner: false,
       themeMode: themeMode,
       theme: ThemeData(
         colorSchemeSeed: colorSelected.color,
@@ -58,13 +58,29 @@ class _GymFitState extends State<GymFit> {
         useMaterial3: true,
         brightness: Brightness.dark,
       ),
-      home: Home(
-        appTitle: appTitle,
-        workoutManager: _cartManager,
-        planManager: _orderManager,
-        changeTheme: changeThemeMode,
-        changeColor: changeColor,
-        colorSelected: colorSelected,
+      home: StreamBuilder<User?>(
+        stream: _auth.user,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Scaffold(
+              body: Center(child: CircularProgressIndicator()),
+            );
+          }
+
+          if (snapshot.hasData) {
+            return Home(
+              appTitle: appTitle,
+              workoutManager: _cartManager,
+              planManager: _orderManager,
+              changeTheme: changeThemeMode,
+              changeColor: changeColor,
+              colorSelected: colorSelected,
+              auth: _auth,
+            );
+          }
+
+          return AuthScreen();
+        },
       ),
     );
   }

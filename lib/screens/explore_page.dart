@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../api/mock_yummy_service.dart';
 import '../components/category_section.dart';
-import '../components/post_section.dart';
 import '../components/gym_section.dart';
 import '../models/workout_manager.dart';
 import '../models/plan_manager.dart';

@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
-import 'screens/profile_page.dart';
-import 'screens/map_screen.dart';
-import 'components/color_button.dart';
-import 'components/theme_button.dart';
-import 'constants.dart';
-import 'models/workout_manager.dart';
-import 'models/plan_manager.dart';
-import 'screens/explore_page.dart';
-import 'screens/myorders_page.dart';
-import 'screens/food_search_screen.dart';
-import 'screens/meal_plan_screen.dart';
-
-
-
+import 'package:finalka/screens/explore_page.dart';
+import 'package:finalka/screens/community_page.dart';
+import 'package:finalka/screens/myorders_page.dart';
+import 'package:finalka/screens/food_search_screen.dart';
+import 'package:finalka/screens/map_screen.dart';
+import 'package:finalka/screens/profile_page.dart';
+import 'package:finalka/models/workout_manager.dart';
+import 'package:finalka/models/plan_manager.dart';
+import 'package:finalka/constants.dart';
+import 'package:finalka/services/auth_service.dart';
+import 'package:finalka/components/theme_button.dart';
+import 'package:finalka/components/color_button.dart';
 
 class Home extends StatefulWidget {
   const Home({
@@ -23,90 +21,106 @@ class Home extends StatefulWidget {
     required this.changeColor,
     required this.colorSelected,
     required this.appTitle,
+    required this.auth,
   });
 
   final CartManager workoutManager;
   final PlanManager planManager;
-  final ColorSelection colorSelected;
   final void Function(bool useLightMode) changeTheme;
   final void Function(int value) changeColor;
+  final ColorSelection colorSelected;
   final String appTitle;
+  final AuthService auth;
 
   @override
-  State<Home> createState() => _HomeState();
+  State<Home> createState() => _HomeState(); // ✅ Добавлено
 }
 
 class _HomeState extends State<Home> {
-  int tab = 0;
-  List<NavigationDestination> appBarDestinations = const [
-    NavigationDestination(
-      icon: Icon(Icons.home_outlined),
-      label: 'Home',
-      selectedIcon: Icon(Icons.home),
-    ),
-    NavigationDestination(
-      icon: Icon(Icons.list_outlined),
-      label: 'Trainings',
-      selectedIcon: Icon(Icons.list),
-    ),
-    NavigationDestination(
-      icon: Icon(Icons.restaurant_outlined),
-      label: 'Food',
-      selectedIcon: Icon(Icons.restaurant),
-    ),
-    NavigationDestination(
-      icon: Icon(Icons.map_outlined),
-      label: 'Map',
-      selectedIcon: Icon(Icons.map),
-    ),
-    NavigationDestination(
-      icon: Icon(Icons.person_2_outlined),
-      label: 'Account',
-      selectedIcon: Icon(Icons.person),
-    )
+  int _selectedTab = 0;
+
+  final List<Widget> _pages = [
+    const Placeholder(), // Will be replaced with ExplorePage
+    const CommunityPage(),
+    const Placeholder(), // Will be replaced with MyOrdersPage
+    FoodSearchScreen(),
+    const MapScreen(),
+    const ProfilePage(),
   ];
 
   @override
+  void initState() {
+    super.initState();
+    // Initialize pages with proper dependencies
+    _pages[0] = ExplorePage(
+      workoutManager: widget.workoutManager,
+      planManager: widget.planManager,
+    );
+    _pages[2] = MyOrdersPage(planManager: widget.planManager);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final pages = [
-      ExplorePage(
-        workoutManager: widget.workoutManager,
-        planManager: widget.planManager,
-      ),
-      MyOrdersPage(planManager: widget.planManager),
-      FoodSearchScreen(),
-      MapScreen(),
-      const ProfilePage(), // ← this is new
-    ];
-
-
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.appTitle),
-        elevation: 4.0,
-        backgroundColor: Theme.of(context).colorScheme.background,
         actions: [
-          ThemeButton(
-            changeThemeMode: widget.changeTheme,
-          ),
+          ThemeButton(changeThemeMode: widget.changeTheme),
           ColorButton(
             changeColor: widget.changeColor,
             colorSelected: widget.colorSelected,
           ),
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () async {
+              await widget.auth.signOut();
+            },
+          ),
         ],
       ),
       body: IndexedStack(
-        index: tab,
-        children: pages,
+        index: _selectedTab,
+        children: _pages,
       ),
       bottomNavigationBar: NavigationBar(
-        selectedIndex: tab,
+        selectedIndex: _selectedTab,
         onDestinationSelected: (index) {
           setState(() {
-            tab = index;
+            _selectedTab = index;
           });
         },
-        destinations: appBarDestinations,
+        destinations: const [
+          NavigationDestination(
+            icon: Icon(Icons.home_outlined),
+            label: 'Home',
+            selectedIcon: Icon(Icons.home),
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.people_outlined),
+            label: 'Community',
+            selectedIcon: Icon(Icons.people),
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.list_outlined),
+            label: 'Trainings',
+            selectedIcon: Icon(Icons.list),
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.restaurant_outlined),
+            label: 'Food',
+            selectedIcon: Icon(Icons.restaurant),
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.map_outlined),
+            label: 'Map',
+            selectedIcon: Icon(Icons.map),
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.person_2_outlined),
+            label: 'Account',
+            selectedIcon: Icon(Icons.person),
+          ),
+        ],
       ),
     );
   }

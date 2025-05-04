@@ -63,7 +63,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
             Image.asset(
               widget.gym.imageUrl,
               fit: BoxFit.cover,
-              color: Colors.black.withOpacity(0.3),
+              color: Color.fromRGBO(0, 0, 0, 0.3),
               colorBlendMode: BlendMode.darken,
             ),
             Container(
