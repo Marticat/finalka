@@ -51,7 +51,7 @@ class GymSection extends StatelessWidget {
                         MaterialPageRoute(
                           builder: (context) => RestaurantPage(
                             gym: gyms[index],
-                            workoutManager: workoutManager,
+                            cartManager: workoutManager,
                             planManager: planManager,
                           ),
                         ),

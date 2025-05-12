@@ -1,21 +1,18 @@
 import 'package:flutter/material.dart';
-
 import '../components/item_details.dart';
-import '../components/exercise_item.dart';
 import '../models/workout_manager.dart';
 import '../models/plan_manager.dart';
 import '../models/gym.dart';
-import 'checkout_page.dart';
 
 class RestaurantPage extends StatefulWidget {
   final Gym gym;
-  final CartManager workoutManager;
+  final CartManager cartManager;
   final PlanManager planManager;
 
   const RestaurantPage({
     super.key,
     required this.gym,
-    required this.workoutManager,
+    required this.cartManager,
     required this.planManager,
   });
 
@@ -23,12 +20,35 @@ class RestaurantPage extends StatefulWidget {
   State<RestaurantPage> createState() => _RestaurantPageState();
 }
 
-class _RestaurantPageState extends State<RestaurantPage> {
+class _RestaurantPageState extends State<RestaurantPage> with SingleTickerProviderStateMixin {
   static const double largeScreenPercentage = 0.9;
   static const double maxWidth = 1000;
   static const desktopThreshold = 700;
-  static const double drawerWidth = 375.0;
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+  late AnimationController _animationController;
+  late Animation<double> _fadeAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    );
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: Curves.easeIn,
+      ),
+    );
+    _animationController.forward();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
 
   double _calculateConstrainedWidth(double screenWidth) {
     return (screenWidth > desktopThreshold
@@ -38,8 +58,64 @@ class _RestaurantPageState extends State<RestaurantPage> {
   }
 
   int calculateColumnCount(double screenWidth) {
-    const desktopThreshold = 700;
     return screenWidth > desktopThreshold ? 2 : 1;
+  }
+
+  Widget _buildInfoSection() {
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Text(
+          'Gym Information',
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildGridViewSection(String title) {
+    return SliverPadding(
+      padding: const EdgeInsets.all(16.0),
+      sliver: SliverGrid(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
+          childAspectRatio: 0.8,
+        ),
+        delegate: SliverChildBuilderDelegate(
+              (context, index) => Container(
+            color: Colors.grey[200],
+            child: Center(child: Text('Item $index')),
+          ),
+          childCount: 4,
+        ),
+      ),
+    );
+  }
+
+
+  Widget _buildEndDrawer() {
+    return Drawer(
+      child: ListView(
+        children: [
+          const DrawerHeader(
+            child: Text('Menu'),
+          ),
+          ListTile(
+            title: const Text('Settings'),
+            onTap: () {},
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFloatingActionButton() {
+    return FloatingActionButton(
+      onPressed: () {},
+      child: const Icon(Icons.add),
+    );
   }
 
   CustomScrollView _buildCustomScrollView() {
@@ -57,171 +133,44 @@ class _RestaurantPageState extends State<RestaurantPage> {
       pinned: true,
       expandedHeight: 280.0,
       flexibleSpace: FlexibleSpaceBar(
-        background: Stack(
-          fit: StackFit.expand,
-          children: [
-            Image.asset(
-              widget.gym.imageUrl,
-              fit: BoxFit.cover,
-              color: Color.fromRGBO(0, 0, 0, 0.3),
-              colorBlendMode: BlendMode.darken,
-            ),
-            Container(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Colors.transparent, Colors.black54],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                ),
+        background: Hero(
+          tag: 'gym-${widget.gym.id}',
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              Image.asset(
+                widget.gym.imageUrl,
+                fit: BoxFit.cover,
+                color: const Color.fromRGBO(0, 0, 0, 0.3),
+                colorBlendMode: BlendMode.darken,
               ),
-            ),
-            Align(
-              alignment: Alignment.bottomLeft,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Text(
-                  widget.gym.name,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
+              Container(
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [Colors.transparent, Colors.black54],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
                   ),
                 ),
               ),
-            ),
-          ],
+              Align(
+                alignment: Alignment.bottomLeft,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(
+                    widget.gym.name,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
-    );
-  }
-
-  SliverToBoxAdapter _buildInfoSection() {
-    final textTheme = Theme.of(context).textTheme;
-    final restaurant = widget.gym;
-    return SliverToBoxAdapter(
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              restaurant.name,
-              style: textTheme.headlineLarge,
-            ),
-            Text(
-              restaurant.address,
-              style: textTheme.bodySmall,
-            ),
-            Text(
-              restaurant.getRatingAndDistance(),
-              style: textTheme.bodySmall,
-            ),
-            Text(
-              restaurant.attributes,
-              style: textTheme.labelSmall,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildGridItem(int index) {
-    final item = widget.gym.items[index];
-    return InkWell(
-      onTap: () => _showBottomSheet(item),
-      child: GymItem(item: item),
-    );
-  }
-
-  Widget _sectionTitle(String title) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Text(
-        title,
-        style: const TextStyle(
-          fontSize: 24,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-    );
-  }
-
-  GridView _buildGridView(int columns) {
-    return GridView.builder(
-      padding: const EdgeInsets.all(0),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        mainAxisSpacing: 16,
-        crossAxisSpacing: 16,
-        childAspectRatio: 3.5,
-        crossAxisCount: columns,
-      ),
-      itemBuilder: (context, index) => _buildGridItem(index),
-      itemCount: widget.gym.items.length,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-    );
-  }
-
-  SliverToBoxAdapter _buildGridViewSection(String title) {
-    final columns = calculateColumnCount(MediaQuery.of(context).size.width);
-    return SliverToBoxAdapter(
-      child: Container(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _sectionTitle(title),
-            _buildGridView(columns),
-          ],
-        ),
-      ),
-    );
-  }
-
-  void _showBottomSheet(ExerciseItem item) {
-    showModalBottomSheet<void>(
-      isScrollControlled: true,
-      context: context,
-      constraints: const BoxConstraints(maxWidth: 480),
-      builder: (context) => ItemDetails(
-        item: item,
-        cartManager: widget.workoutManager,
-        quantityUpdated: () {
-          setState(() {});
-        },
-      ),
-    );
-  }
-
-  Widget _buildEndDrawer() {
-    return SizedBox(
-      width: drawerWidth,
-      child: Drawer(
-        child: CheckoutPage(
-          cartManager: widget.workoutManager,
-          didUpdate: () {
-            setState(() {});
-          },
-          onSubmit: (order) {
-            widget.planManager.addOrder(order);
-            Navigator.popUntil(context, (route) => route.isFirst);
-          },
-        ),
-      ),
-    );
-  }
-
-  void openDrawer() {
-    scaffoldKey.currentState!.openEndDrawer();
-  }
-
-  Widget _buildFloatingActionButton() {
-    return FloatingActionButton.extended(
-      onPressed: openDrawer,
-      tooltip: 'List',
-      icon: const Icon(Icons.fitness_center_sharp),
-      label: Text('${widget.workoutManager.items.length} Exercises to do'),
     );
   }
 
@@ -234,10 +183,13 @@ class _RestaurantPageState extends State<RestaurantPage> {
       key: scaffoldKey,
       endDrawer: _buildEndDrawer(),
       floatingActionButton: _buildFloatingActionButton(),
-      body: Center(
-        child: SizedBox(
-          width: constrainedWidth,
-          child: _buildCustomScrollView(),
+      body: FadeTransition(
+        opacity: _fadeAnimation,
+        child: Center(
+          child: SizedBox(
+            width: constrainedWidth,
+            child: _buildCustomScrollView(),
+          ),
         ),
       ),
     );
