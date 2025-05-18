@@ -7,12 +7,12 @@ import '../models/plan_manager.dart';
 import '../models/gym.dart';
 import 'checkout_page.dart';
 
-class RestaurantPage extends StatefulWidget {
+class GymPage extends StatefulWidget {
   final Gym gym;
-  final CartManager workoutManager;
+  final WorkoutManager workoutManager;
   final PlanManager planManager;
 
-  const RestaurantPage({
+  const GymPage({
     super.key,
     required this.gym,
     required this.workoutManager,
@@ -20,10 +20,10 @@ class RestaurantPage extends StatefulWidget {
   });
 
   @override
-  State<RestaurantPage> createState() => _RestaurantPageState();
+  State<GymPage> createState() => _GymPageState();
 }
 
-class _RestaurantPageState extends State<RestaurantPage> {
+class _GymPageState extends State<GymPage> {
   static const double largeScreenPercentage = 0.9;
   static const double maxWidth = 1000;
   static const desktopThreshold = 700;
@@ -31,12 +31,8 @@ class _RestaurantPageState extends State<RestaurantPage> {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   double _calculateConstrainedWidth(double screenWidth) {
-    return (screenWidth > desktopThreshold
-        ? screenWidth * largeScreenPercentage
-        : screenWidth)
-        .clamp(0.0, maxWidth);
+    return (screenWidth > desktopThreshold) ? screenWidth * largeScreenPercentage : screenWidth;
   }
-
   int calculateColumnCount(double screenWidth) {
     const desktopThreshold = 700;
     return screenWidth > desktopThreshold ? 2 : 1;
@@ -97,7 +93,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
 
   SliverToBoxAdapter _buildInfoSection() {
     final textTheme = Theme.of(context).textTheme;
-    final restaurant = widget.gym;
+    final gym = widget.gym;
     return SliverToBoxAdapter(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -105,19 +101,19 @@ class _RestaurantPageState extends State<RestaurantPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              restaurant.name,
+              gym.name,
               style: textTheme.headlineLarge,
             ),
             Text(
-              restaurant.address,
+              gym.address,
               style: textTheme.bodySmall,
             ),
             Text(
-              restaurant.getRatingAndDistance(),
+              gym.getRatingAndDistance(),
               style: textTheme.bodySmall,
             ),
             Text(
-              restaurant.attributes,
+              gym.attributes,
               style: textTheme.labelSmall,
             ),
           ],
@@ -130,9 +126,13 @@ class _RestaurantPageState extends State<RestaurantPage> {
     final item = widget.gym.items[index];
     return InkWell(
       onTap: () => _showBottomSheet(item),
-      child: GymItem(item: item),
+      child: GymItem(
+        item: item,
+        workoutManager: widget.workoutManager, // Передаем workoutManager
+      ),
     );
   }
+
 
   Widget _sectionTitle(String title) {
     return Padding(
@@ -186,7 +186,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
       constraints: const BoxConstraints(maxWidth: 480),
       builder: (context) => ItemDetails(
         item: item,
-        cartManager: widget.workoutManager,
+        workoutManager: widget.workoutManager,
         quantityUpdated: () {
           setState(() {});
         },
@@ -199,7 +199,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
       width: drawerWidth,
       child: Drawer(
         child: CheckoutPage(
-          cartManager: widget.workoutManager,
+          workoutManager: widget.workoutManager,
           didUpdate: () {
             setState(() {});
           },
@@ -224,11 +224,10 @@ class _RestaurantPageState extends State<RestaurantPage> {
       label: Text('${widget.workoutManager.items.length} Exercises to do'),
     );
   }
-
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final constrainedWidth = _calculateConstrainedWidth(screenWidth);
+    double constrainedWidth = _calculateConstrainedWidth(screenWidth); // предполагаем, что эта переменная была инициализирована.
 
     return Scaffold(
       key: scaffoldKey,
@@ -236,7 +235,7 @@ class _RestaurantPageState extends State<RestaurantPage> {
       floatingActionButton: _buildFloatingActionButton(),
       body: Center(
         child: SizedBox(
-          width: constrainedWidth,
+          width: constrainedWidth, // используем вычисленную ширину
           child: _buildCustomScrollView(),
         ),
       ),

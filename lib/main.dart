@@ -8,6 +8,7 @@ import 'models/plan_manager.dart';
 import 'constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -21,12 +22,28 @@ class GymFit extends StatefulWidget {
   State<GymFit> createState() => _GymFitState();
 }
 
-class _GymFitState extends State<GymFit> {
+class _GymFitState extends State<GymFit> with SingleTickerProviderStateMixin {
+  late AnimationController _animationController;
   final AuthService _auth = AuthService();
   ThemeMode themeMode = ThemeMode.light;
   ColorSelection colorSelected = ColorSelection.red;
-  final CartManager _cartManager = CartManager();
+  final WorkoutManager _WorkoutManager = WorkoutManager();
   final PlanManager _orderManager = PlanManager();
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    );
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
 
   void changeThemeMode(bool useLightMode) {
     setState(() {
@@ -37,6 +54,7 @@ class _GymFitState extends State<GymFit> {
   void changeColor(int value) {
     setState(() {
       colorSelected = ColorSelection.values[value];
+      _animationController.forward(from: 0);
     });
   }
 
@@ -52,25 +70,42 @@ class _GymFitState extends State<GymFit> {
         colorSchemeSeed: colorSelected.color,
         useMaterial3: true,
         brightness: Brightness.light,
+        pageTransitionsTheme: const PageTransitionsTheme(
+          builders: {
+            TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
+            TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+          },
+        ),
       ),
       darkTheme: ThemeData(
         colorSchemeSeed: colorSelected.color,
         useMaterial3: true,
         brightness: Brightness.dark,
+        pageTransitionsTheme: const PageTransitionsTheme(
+          builders: {
+            TargetPlatform.android: FadeUpwardsPageTransitionsBuilder(),
+            TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+          },
+        ),
       ),
       home: StreamBuilder<User?>(
         stream: _auth.user,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Scaffold(
-              body: Center(child: CircularProgressIndicator()),
+            return Scaffold(
+              body: Center(
+                child: RotationTransition(
+                  turns: Tween(begin: 0.0, end: 1.0).animate(_animationController),
+                  child: const CircularProgressIndicator(),
+                ),
+              ),
             );
           }
 
           if (snapshot.hasData) {
             return Home(
               appTitle: appTitle,
-              workoutManager: _cartManager,
+              workoutManager: _WorkoutManager,
               planManager: _orderManager,
               changeTheme: changeThemeMode,
               changeColor: changeColor,
@@ -79,7 +114,7 @@ class _GymFitState extends State<GymFit> {
             );
           }
 
-          return AuthScreen();
+          return const AuthScreen();
         },
       ),
     );

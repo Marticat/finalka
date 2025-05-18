@@ -1,3 +1,4 @@
+// home.dart
 import 'package:flutter/material.dart';
 import 'package:finalka/screens/explore_page.dart';
 import 'package:finalka/screens/community_page.dart';
@@ -24,7 +25,7 @@ class Home extends StatefulWidget {
     required this.auth,
   });
 
-  final CartManager workoutManager;
+  final WorkoutManager workoutManager;
   final PlanManager planManager;
   final void Function(bool useLightMode) changeTheme;
   final void Function(int value) changeColor;
@@ -33,16 +34,18 @@ class Home extends StatefulWidget {
   final AuthService auth;
 
   @override
-  State<Home> createState() => _HomeState(); // ✅ Добавлено
+  State<Home> createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeState extends State<Home> with TickerProviderStateMixin {
   int _selectedTab = 0;
+  late AnimationController _animationController;
+  late Animation<double> _fadeAnimation;
 
   final List<Widget> _pages = [
-    const Placeholder(), // Will be replaced with ExplorePage
+    const Placeholder(),
     const CommunityPage(),
-    const Placeholder(), // Will be replaced with MyOrdersPage
+    const Placeholder(),
     FoodSearchScreen(),
     const MapScreen(),
     const ProfilePage(),
@@ -51,12 +54,31 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 500),
+    );
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: Curves.easeIn,
+      ),
+    );
+
     // Initialize pages with proper dependencies
     _pages[0] = ExplorePage(
       workoutManager: widget.workoutManager,
       planManager: widget.planManager,
     );
     _pages[2] = MyOrdersPage(planManager: widget.planManager);
+
+    _animationController.forward();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
   }
 
   @override
@@ -78,15 +100,20 @@ class _HomeState extends State<Home> {
           ),
         ],
       ),
-      body: IndexedStack(
-        index: _selectedTab,
-        children: _pages,
+      body: FadeTransition(
+        opacity: _fadeAnimation,
+        child: IndexedStack(
+          index: _selectedTab,
+          children: _pages,
+        ),
       ),
       bottomNavigationBar: NavigationBar(
         selectedIndex: _selectedTab,
         onDestinationSelected: (index) {
           setState(() {
             _selectedTab = index;
+            _animationController.reset();
+            _animationController.forward();
           });
         },
         destinations: const [

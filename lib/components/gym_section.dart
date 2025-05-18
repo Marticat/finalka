@@ -8,7 +8,7 @@ import '../screens/gym_page.dart';
 
 class GymSection extends StatelessWidget {
   final List<Gym> gyms;
-  final CartManager workoutManager;
+  final WorkoutManager workoutManager;
   final PlanManager planManager;
 
   const GymSection({
@@ -49,7 +49,7 @@ class GymSection extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => RestaurantPage(
+                          builder: (context) => GymPage(
                             gym: gyms[index],
                             workoutManager: workoutManager,
                             planManager: planManager,

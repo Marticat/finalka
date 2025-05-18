@@ -16,7 +16,7 @@ class CartItem {
 
 enum DeliveryMode { delivery, pickup }
 
-class CartManager {
+class WorkoutManager {
   final List<CartItem> _items = [];
   DeliveryMode _mode = DeliveryMode.pickup;
   DateTime? _timeOfPickupOrDelivery;

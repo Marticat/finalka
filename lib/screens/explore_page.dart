@@ -10,7 +10,7 @@ import '../screens/exercise_list_page.dart';
 
 class ExplorePage extends StatelessWidget {
   final mockService = MockYummyService();
-  final CartManager workoutManager;
+  final WorkoutManager workoutManager;
   final PlanManager planManager;
 
   ExplorePage({
@@ -27,7 +27,7 @@ class ExplorePage extends StatelessWidget {
         future: mockService.getExploreData(),
         builder: (context, AsyncSnapshot<ExploreData> snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            final restaurants = snapshot.data?.restaurants ?? [];
+            final gyms = snapshot.data?.gyms ?? [];
             final categories = snapshot.data?.categories ?? [];
             final posts = snapshot.data?.friendPosts ?? [];
 
@@ -42,7 +42,7 @@ class ExplorePage extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(12),
                     child: GymSection(
-                      gyms: restaurants,
+                      gyms: gyms,
                       workoutManager: workoutManager,
                       planManager: planManager,
                     ),

@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
 import '../models/workout_manager.dart';
 import '../models/plan_manager.dart';
 
 class CheckoutPage extends StatefulWidget {
-  final CartManager cartManager;
+  final WorkoutManager workoutManager;
   final Function() didUpdate;
   final Function(WorkoutPlan) onSubmit;
 
   const CheckoutPage({
     super.key,
-    required this.cartManager,
+    required this.workoutManager,
     required this.didUpdate,
     required this.onSubmit,
   });
@@ -123,9 +122,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
     return Expanded(
       child: ListView.builder(
-        itemCount: widget.cartManager.items.length,
+        itemCount: widget.workoutManager.items.length,
         itemBuilder: (context, index) {
-          final item = widget.cartManager.itemAt(index);
+          final item = widget.workoutManager.itemAt(index);
 
           // TODO: Wrap in a Dismissible Widget
           return Dismissible(
@@ -142,7 +141,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
             ),
             onDismissed: (direction) {
               setState(() {
-                widget.cartManager.removeItem(item.id);
+                widget.workoutManager.removeItem(item.id);
               });
               widget.didUpdate();
             },
@@ -172,14 +171,14 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
   Widget _buildSubmitButton() {
     return ElevatedButton(
-      onPressed: widget.cartManager.isEmpty
+      onPressed: widget.workoutManager.isEmpty
           ? null
           : () {
               final selectedSegment = this.selectedSegment;
               final selectedTime = this.selectedTime;
               final selectedDate = this.selectedDate;
               final name = _nameController.text;
-              final items = widget.cartManager.items;
+              final items = widget.workoutManager.items;
               final order = WorkoutPlan(
                 selectedSegment: selectedSegment,
                 selectedTime: selectedTime,
@@ -187,7 +186,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 name: name,
                 items: items,
               );
-              widget.cartManager.resetCart();
+              widget.workoutManager.resetCart();
               widget.onSubmit(order);
             },
       child: Padding(

@@ -1,9 +1,9 @@
 class ExerciseCategory {
   String name;
-  int numberOfRestaurants;
+  int numberOfGyms;
   String imageUrl;
 
-  ExerciseCategory(this.name, this.numberOfRestaurants, this.imageUrl);
+  ExerciseCategory(this.name, this.numberOfGyms, this.imageUrl);
 }
 
 List<ExerciseCategory> categories = [

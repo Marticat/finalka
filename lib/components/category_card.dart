@@ -38,7 +38,7 @@ class CategoryCard extends StatelessWidget {
                 style: textTheme.titleSmall,
               ),
               subtitle: Text(
-                '${category.numberOfRestaurants} exercises',
+                '${category.numberOfGyms} exercises',
                 style: textTheme.bodySmall,
               ),
             ),
