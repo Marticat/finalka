@@ -7,7 +7,10 @@ import 'models/workout_manager.dart';
 import 'models/plan_manager.dart';
 import 'constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:finalka/l10n/l10n.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,8 +30,9 @@ class _GymFitState extends State<GymFit> with SingleTickerProviderStateMixin {
   final AuthService _auth = AuthService();
   ThemeMode themeMode = ThemeMode.light;
   ColorSelection colorSelected = ColorSelection.red;
-  final WorkoutManager _WorkoutManager = WorkoutManager();
+  final WorkoutManager _workoutManager = WorkoutManager();
   final PlanManager _orderManager = PlanManager();
+  Locale _locale = const Locale('en');
 
   @override
   void initState() {
@@ -58,14 +62,23 @@ class _GymFitState extends State<GymFit> with SingleTickerProviderStateMixin {
     });
   }
 
+  void changeLanguage(Locale locale) {
+    setState(() {
+      _locale = locale;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    const appTitle = 'GymFit';
-
     return MaterialApp(
-      title: appTitle,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      title: 'GymFit',
       debugShowCheckedModeBanner: false,
       themeMode: themeMode,
+      locale: _locale,
+
+
       theme: ThemeData(
         colorSchemeSeed: colorSelected.color,
         useMaterial3: true,
@@ -104,13 +117,15 @@ class _GymFitState extends State<GymFit> with SingleTickerProviderStateMixin {
 
           if (snapshot.hasData) {
             return Home(
-              appTitle: appTitle,
-              workoutManager: _WorkoutManager,
+              appTitle: Localizations.of<AppLocalizations>(context, AppLocalizations)?.appTitle ?? 'GymFit',
+
+              workoutManager: _workoutManager,
               planManager: _orderManager,
               changeTheme: changeThemeMode,
               changeColor: changeColor,
               colorSelected: colorSelected,
               auth: _auth,
+              changeLanguage: changeLanguage,
             );
           }
 

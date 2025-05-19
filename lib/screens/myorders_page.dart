@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
 import '../models/plan_manager.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MyOrdersPage extends StatelessWidget {
   final PlanManager planManager;
@@ -12,6 +12,7 @@ class MyOrdersPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = Localizations.of<AppLocalizations>(context, AppLocalizations);
     final textTheme = Theme.of(context)
         .textTheme
         .apply(displayColor: Theme.of(context).colorScheme.onSurface);
@@ -19,7 +20,7 @@ class MyOrdersPage extends StatelessWidget {
       appBar: AppBar(
         centerTitle: false,
         title: Text(
-          'Planned exercises',
+          l10n!.plannedExercises,
           style: textTheme.headlineMedium,
         ),
       ),

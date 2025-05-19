@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../models/workout_manager.dart';
+import '../models/workout_manager.dart' show WorkoutManager, CartItem;
 import '../models/plan_manager.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CheckoutPage extends StatefulWidget {
   final WorkoutManager workoutManager;
@@ -30,17 +31,20 @@ class _CheckoutPageState extends State<CheckoutPage> {
   final DateTime _firstDate = DateTime(DateTime.now().year - 2);
   final DateTime _lastDate = DateTime(DateTime.now().year + 1);
   final TextEditingController _nameController = TextEditingController();
+
   String formatDate(DateTime? dateTime) {
+    final l10n = Localizations.of<AppLocalizations>(context, AppLocalizations)!;
     if (dateTime == null) {
-      return 'Select Workout Date';
+      return l10n!.selectWorkoutDate;
     }
     final formatter = DateFormat('yyyy-MM-dd');
     return formatter.format(dateTime);
   }
 
   String formatTimeOfDay(TimeOfDay? timeOfDay) {
+    final l10n = Localizations.of<AppLocalizations>(context, AppLocalizations)!;
     if (timeOfDay == null) {
-      return 'Select Start Time';
+      return l10n!.selectStartTime;
     }
     final hour = timeOfDay.hour.toString().padLeft(2, '0');
     final minute = timeOfDay.minute.toString().padLeft(2, '0');
@@ -54,18 +58,19 @@ class _CheckoutPageState extends State<CheckoutPage> {
   }
 
   Widget _buildOrderSegmentedType() {
+    final l10n = Localizations.of<AppLocalizations>(context, AppLocalizations)!;
     return SegmentedButton(
       showSelectedIcon: false,
-      segments: const [
+      segments: [
         ButtonSegment(
           value: 0,
-          label: Text('Superset'),
-          icon: Icon(Icons.fitness_center),
+          label: Text(l10n!.superset),
+          icon: const Icon(Icons.fitness_center),
         ),
         ButtonSegment(
           value: 1,
-          label: Text('With Rest'),
-          icon: Icon(Icons.timer),
+          label: Text(l10n.withRest),
+          icon: const Icon(Icons.timer),
         ),
       ],
       selected: selectedSegment,
@@ -74,10 +79,11 @@ class _CheckoutPageState extends State<CheckoutPage> {
   }
 
   Widget _buildTextField() {
+    final l10n = Localizations.of<AppLocalizations>(context, AppLocalizations)!;
     return TextField(
       controller: _nameController,
-      decoration: const InputDecoration(
-        labelText: 'Workout Plan Name',
+      decoration: InputDecoration(
+        labelText: l10n!.workoutPlanName,
       ),
     );
   }
@@ -126,7 +132,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
         itemBuilder: (context, index) {
           final item = widget.workoutManager.itemAt(index);
 
-          // TODO: Wrap in a Dismissible Widget
           return Dismissible(
             key: Key(item.id),
             direction: DismissDirection.endToStart,
@@ -170,35 +175,36 @@ class _CheckoutPageState extends State<CheckoutPage> {
   }
 
   Widget _buildSubmitButton() {
+    final l10n = Localizations.of<AppLocalizations>(context, AppLocalizations)!;
     return ElevatedButton(
       onPressed: widget.workoutManager.isEmpty
           ? null
           : () {
-              final selectedSegment = this.selectedSegment;
-              final selectedTime = this.selectedTime;
-              final selectedDate = this.selectedDate;
-              final name = _nameController.text;
-              final items = widget.workoutManager.items;
-              final order = WorkoutPlan(
-                selectedSegment: selectedSegment,
-                selectedTime: selectedTime,
-                selectedDate: selectedDate,
-                name: name,
-                items: items,
-              );
-              widget.workoutManager.resetCart();
-              widget.onSubmit(order);
-            },
+        final selectedSegment = this.selectedSegment;
+        final selectedTime = this.selectedTime;
+        final selectedDate = this.selectedDate;
+        final name = _nameController.text;
+        final items = widget.workoutManager.items;
+        final order = WorkoutPlan(
+          selectedSegment: selectedSegment,
+          selectedTime: selectedTime,
+          selectedDate: selectedDate,
+          name: name,
+          items: items,
+        );
+        widget.workoutManager.resetCart();
+        widget.onSubmit(order);
+      },
       child: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Text(
-            '''Accept plan'''),
+        child: Text(l10n!.acceptPlan),
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = Localizations.of<AppLocalizations>(context, AppLocalizations)!;
     final textTheme = Theme.of(context)
         .textTheme
         .apply(displayColor: Theme.of(context).colorScheme.onSurface);
@@ -216,7 +222,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              'Workout Details',
+              l10n!.workoutDetails,
               style: textTheme.headlineSmall,
             ),
             const SizedBox(height: 16.0),
@@ -237,7 +243,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
               ],
             ),
             const SizedBox(height: 16.0),
-            const Text('Exercise Summary'),
+            Text(l10n.exerciseSummary),
             _buildOrderSummary(context),
             _buildSubmitButton(),
           ],

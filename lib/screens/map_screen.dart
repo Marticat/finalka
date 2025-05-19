@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
-import 'package:flutter/services.dart'; // For clipboard
+import 'package:flutter/services.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
@@ -26,23 +27,22 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   Future<void> _getCurrentLocation() async {
+    final l10n = Localizations.of<AppLocalizations>(context, AppLocalizations);
     try {
-      // Check if location services are enabled
       bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
       if (!serviceEnabled) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Please enable location services')),
+          SnackBar(content: Text(l10n!.pleaseEnableLocationServices)),
         );
         return;
       }
 
-      // Check location permissions
       LocationPermission permission = await Geolocator.checkPermission();
       if (permission == LocationPermission.denied) {
         permission = await Geolocator.requestPermission();
         if (permission == LocationPermission.denied) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Location permissions are denied')),
+            SnackBar(content: Text(l10n!.locationPermissionsDenied)),
           );
           return;
         }
@@ -50,23 +50,21 @@ class _MapScreenState extends State<MapScreen> {
 
       if (permission == LocationPermission.deniedForever) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Location permissions are permanently denied')),
+          SnackBar(content: Text(l10n!.locationPermissionsPermanentlyDenied)),
         );
         return;
       }
 
-      // Get current position
       Position position = await Geolocator.getCurrentPosition();
       setState(() {
         _currentPosition = LatLng(position.latitude, position.longitude);
       });
 
-      // Get address and add gym markers
       await _getAddressFromLatLng(_currentPosition!);
       _addGymMarkers();
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error getting location: ${e.toString()}')),
+        SnackBar(content: Text('${l10n!.errorGettingLocation}: ${e.toString()}')),
       );
     }
   }
@@ -90,13 +88,15 @@ class _MapScreenState extends State<MapScreen> {
         });
       }
     } catch (e) {
+      final l10n = Localizations.of<AppLocalizations>(context, AppLocalizations);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error getting address: ${e.toString()}')),
+        SnackBar(content: Text('${l10n!.errorGettingAddress}: ${e.toString()}')),
       );
     }
   }
 
   Future<void> _searchLocation() async {
+    final l10n = Localizations.of<AppLocalizations>(context, AppLocalizations);
     if (_searchController.text.isEmpty) return;
 
     try {
@@ -117,12 +117,12 @@ class _MapScreenState extends State<MapScreen> {
         await _getAddressFromLatLng(newPosition);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('No results found for "${_searchController.text}"')),
+          SnackBar(content: Text('${l10n!.noResultsFoundFor} "${_searchController.text}"')),
         );
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error searching location: ${e.toString()}')),
+        SnackBar(content: Text('${l10n!.errorSearchingLocation}: ${e.toString()}')),
       );
     }
   }
@@ -147,9 +147,11 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = Localizations.of<AppLocalizations>(context, AppLocalizations);
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Find Gyms Nearby'),
+        title: Text(l10n!.findGymsNearby),
         actions: [
           IconButton(
             icon: const Icon(Icons.my_location),
@@ -159,14 +161,13 @@ class _MapScreenState extends State<MapScreen> {
       ),
       body: Column(
         children: [
-          // Search bar
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
               controller: _searchController,
               decoration: InputDecoration(
-                hintText: 'Search for a location (e.g., Astana)',
-                border: OutlineInputBorder(),
+                hintText: l10n.searchLocation,
+                border: const OutlineInputBorder(),
                 suffixIcon: IconButton(
                   icon: const Icon(Icons.search),
                   onPressed: _searchLocation,
@@ -175,25 +176,21 @@ class _MapScreenState extends State<MapScreen> {
               onSubmitted: (value) => _searchLocation(),
             ),
           ),
-
-          // Current location address
           if (_currentAddress.isNotEmpty)
             ListTile(
-              leading: Icon(Icons.location_pin),
-              title: Text('Your Location'),
+              leading: const Icon(Icons.location_pin),
+              title: Text(l10n.yourLocation),
               subtitle: Text(_currentAddress),
               trailing: IconButton(
-                icon: Icon(Icons.copy),
+                icon: const Icon(Icons.copy),
                 onPressed: () {
                   Clipboard.setData(ClipboardData(text: _currentAddress));
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Address copied to clipboard')),
+                    SnackBar(content: Text(l10n.addressCopied)),
                   );
                 },
               ),
             ),
-
-          // Map
           Expanded(
             child: _currentPosition == null
                 ? const Center(child: CircularProgressIndicator())

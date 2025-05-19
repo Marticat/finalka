@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../components/post_card.dart';
 import '../models/post.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PostSection extends StatelessWidget {
   final List<Post> posts;
@@ -11,16 +12,18 @@ class PostSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = Localizations.of<AppLocalizations>(context, AppLocalizations)!;
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Padding(
-            padding: EdgeInsets.only(left: 16.0, bottom: 8.0),
+          Padding(
+            padding: const EdgeInsets.only(left: 16.0, bottom: 8.0),
             child: Text(
-              'Community\'s Activity',
-              style: TextStyle(
+              l10n!.communityActivity,
+              style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:finalka/services/auth_service.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -45,7 +46,7 @@ class _AuthScreenState extends State<AuthScreen> {
 
       if (user == null) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Authentication failed')),
+          SnackBar(content: Text(Localizations.of<AppLocalizations>(context, AppLocalizations)!.authenticationFailed)),
         );
       }
     } finally {
@@ -55,8 +56,10 @@ class _AuthScreenState extends State<AuthScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = Localizations.of<AppLocalizations>(context, AppLocalizations);
+
     return Scaffold(
-      appBar: AppBar(title: const Text('Welcome to GymFit')),
+      appBar: AppBar(title: Text(l10n!.welcomeToGymFit)),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
@@ -66,22 +69,22 @@ class _AuthScreenState extends State<AuthScreen> {
             children: [
               TextFormField(
                 controller: _emailController,
-                decoration: const InputDecoration(labelText: 'Email'),
+                decoration: InputDecoration(labelText: l10n.email),
                 keyboardType: TextInputType.emailAddress,
                 validator: (value) {
                   if (value == null || value.isEmpty || !value.contains('@')) {
-                    return 'Please enter a valid email';
+                    return l10n.pleaseEnterValidEmail;
                   }
                   return null;
                 },
               ),
               TextFormField(
                 controller: _passwordController,
-                decoration: const InputDecoration(labelText: 'Password'),
+                decoration: InputDecoration(labelText: l10n.password),
                 obscureText: true,
                 validator: (value) {
                   if (value == null || value.isEmpty || value.length < 6) {
-                    return 'Password must be at least 6 characters';
+                    return l10n.passwordMustBeAtLeast6Characters;
                   }
                   return null;
                 },
@@ -92,16 +95,16 @@ class _AuthScreenState extends State<AuthScreen> {
               else
                 ElevatedButton(
                   onPressed: _submit,
-                  child: Text(_isLogin ? 'Login' : 'Sign Up'),
+                  child: Text(_isLogin ? l10n.login : l10n.signUp),
                 ),
               TextButton(
                 onPressed: () => setState(() => _isLogin = !_isLogin),
                 child: Text(_isLogin
-                    ? 'Create new account'
-                    : 'I already have an account'),
+                    ? l10n.createNewAccount
+                    : l10n.alreadyHaveAccount),
               ),
               const SizedBox(height: 20),
-              const Text('Or sign in with:'),
+              Text(l10n.orSignInWith),
               const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/exercise.dart';
 import '../models/plan_manager.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProfilePage extends StatefulWidget {
   final PlanManager? planManager;
@@ -56,10 +57,11 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   void _showAddExerciseDialog() {
+    final l10n = Localizations.of<AppLocalizations>(context, AppLocalizations);
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Add Planned Exercise'),
+        title: Text(l10n!.addPlannedExercise),
         content: Form(
           key: _formKey,
           child: SingleChildScrollView(
@@ -68,20 +70,20 @@ class _ProfilePageState extends State<ProfilePage> {
               children: [
                 TextFormField(
                   controller: _exerciseNameController,
-                  decoration: const InputDecoration(labelText: 'Exercise Name'),
-                  validator: (value) => value!.isEmpty ? 'Required' : null,
+                  decoration: InputDecoration(labelText: l10n.exerciseName),
+                  validator: (value) => value!.isEmpty ? l10n.required : null,
                 ),
                 TextFormField(
                   controller: _caloriesController,
-                  decoration: const InputDecoration(labelText: 'Calories'),
+                  decoration: InputDecoration(labelText: l10n.calories),
                   keyboardType: TextInputType.number,
-                  validator: (value) => value!.isEmpty ? 'Required' : null,
+                  validator: (value) => value!.isEmpty ? l10n.required : null,
                 ),
                 TextFormField(
                   controller: _durationController,
-                  decoration: const InputDecoration(labelText: 'Duration (mins)'),
+                  decoration: InputDecoration(labelText: '${l10n.duration} (mins)'),
                   keyboardType: TextInputType.number,
-                  validator: (value) => value!.isEmpty ? 'Required' : null,
+                  validator: (value) => value!.isEmpty ? l10n.required : null,
                 ),
                 DropdownButtonFormField<String>(
                   value: _selectedCategory,
@@ -92,7 +94,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ))
                       .toList(),
                   onChanged: (value) => setState(() => _selectedCategory = value!),
-                  decoration: const InputDecoration(labelText: 'Category'),
+                  decoration: InputDecoration(labelText: l10n.category),
                 ),
                 DropdownButtonFormField<String>(
                   value: _selectedDifficulty,
@@ -103,7 +105,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ))
                       .toList(),
                   onChanged: (value) => setState(() => _selectedDifficulty = value!),
-                  decoration: const InputDecoration(labelText: 'Difficulty'),
+                  decoration: InputDecoration(labelText: l10n.difficulty),
                 ),
               ],
             ),
@@ -112,11 +114,11 @@ class _ProfilePageState extends State<ProfilePage> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text(l10n.cancel),
           ),
           ElevatedButton(
             onPressed: _addExercise,
-            child: const Text('Add'),
+            child: Text(l10n.add),
           ),
         ],
       ),
@@ -124,6 +126,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   void _editExercise(Exercise exercise) {
+    final l10n = Localizations.of<AppLocalizations>(context, AppLocalizations);
     _exerciseNameController.text = exercise.name;
     _caloriesController.text = exercise.calories.toString();
     _durationController.text = exercise.duration.toString();
@@ -133,7 +136,7 @@ class _ProfilePageState extends State<ProfilePage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Edit Exercise'),
+        title: Text(l10n!.editExercise),
         content: Form(
           key: _formKey,
           child: SingleChildScrollView(
@@ -142,20 +145,20 @@ class _ProfilePageState extends State<ProfilePage> {
               children: [
                 TextFormField(
                   controller: _exerciseNameController,
-                  decoration: const InputDecoration(labelText: 'Exercise Name'),
-                  validator: (value) => value!.isEmpty ? 'Required' : null,
+                  decoration: InputDecoration(labelText: l10n.exerciseName),
+                  validator: (value) => value!.isEmpty ? l10n.required : null,
                 ),
                 TextFormField(
                   controller: _caloriesController,
-                  decoration: const InputDecoration(labelText: 'Calories'),
+                  decoration: InputDecoration(labelText: l10n.calories),
                   keyboardType: TextInputType.number,
-                  validator: (value) => value!.isEmpty ? 'Required' : null,
+                  validator: (value) => value!.isEmpty ? l10n.required : null,
                 ),
                 TextFormField(
                   controller: _durationController,
-                  decoration: const InputDecoration(labelText: 'Duration (mins)'),
+                  decoration: InputDecoration(labelText: '${l10n.duration} (mins)'),
                   keyboardType: TextInputType.number,
-                  validator: (value) => value!.isEmpty ? 'Required' : null,
+                  validator: (value) => value!.isEmpty ? l10n.required : null,
                 ),
                 DropdownButtonFormField<String>(
                   value: _selectedCategory,
@@ -166,7 +169,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ))
                       .toList(),
                   onChanged: (value) => setState(() => _selectedCategory = value!),
-                  decoration: const InputDecoration(labelText: 'Category'),
+                  decoration: InputDecoration(labelText: l10n.category),
                 ),
                 DropdownButtonFormField<String>(
                   value: _selectedDifficulty,
@@ -177,7 +180,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ))
                       .toList(),
                   onChanged: (value) => setState(() => _selectedDifficulty = value!),
-                  decoration: const InputDecoration(labelText: 'Difficulty'),
+                  decoration: InputDecoration(labelText: l10n.difficulty),
                 ),
               ],
             ),
@@ -186,7 +189,7 @@ class _ProfilePageState extends State<ProfilePage> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
+            child: Text(l10n.cancel),
           ),
           ElevatedButton(
             onPressed: () {
@@ -210,7 +213,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 Navigator.pop(context);
               }
             },
-            child: const Text('Save'),
+            child: Text(l10n.save),
           ),
         ],
       ),
@@ -243,6 +246,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget _buildProgressSection(BuildContext context) {
+    final l10n = Localizations.of<AppLocalizations>(context, AppLocalizations);
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -254,13 +258,13 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             const SizedBox(height: 8),
             Text(
-              "Workout Progress",
+              l10n!.workoutProgress,
               style: Theme.of(context).textTheme.titleMedium,
             ),
             Text(
               _plannedExercises.isEmpty
-                  ? "Start adding exercises!"
-                  : "${_plannedExercises.length} exercises planned",
+                  ? l10n.startAddingExercises
+                  : "${_plannedExercises.length} ${l10n.exercisesPlanned}",
             ),
           ],
         ),
@@ -269,6 +273,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget _buildStatsSection(BuildContext context) {
+    final l10n = Localizations.of<AppLocalizations>(context, AppLocalizations);
     int totalCalories = _plannedExercises.fold(0, (sum, e) => sum + e.calories);
     int totalDuration = _plannedExercises.fold(0, (sum, e) => sum + e.duration);
 
@@ -279,11 +284,11 @@ class _ProfilePageState extends State<ProfilePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text("Your Stats", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            Text(l10n!.yourStats, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             const SizedBox(height: 8),
-            Text("Total Exercises: ${_plannedExercises.length}"),
-            Text("Total Duration: $totalDuration mins"),
-            Text("Total Calories: $totalCalories cal"),
+            Text("${l10n.totalExercises}: ${_plannedExercises.length}"),
+            Text("${l10n.totalDuration}: $totalDuration mins"),
+            Text("${l10n.totalCalories}: $totalCalories cal"),
           ],
         ),
       ),
@@ -312,11 +317,12 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = Localizations.of<AppLocalizations>(context, AppLocalizations);
     final theme = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("My Profile"),
+        title: Text(l10n!.myProfile),
         centerTitle: true,
         backgroundColor: theme.colorScheme.primary,
         foregroundColor: theme.colorScheme.onPrimary,
@@ -334,7 +340,7 @@ class _ProfilePageState extends State<ProfilePage> {
             _buildProgressSection(context),
             _buildStatsSection(context),
             _buildCardSection(
-              title: 'Planned Exercises',
+              title: l10n.plannedExercises,
               children: _plannedExercises.map(_buildExercisePlanCard).toList(),
             ),
           ],
@@ -344,6 +350,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget _buildExercisePlanCard(Exercise exercise) {
+    final l10n = Localizations.of<AppLocalizations>(context, AppLocalizations);
     return Card(
       child: ListTile(
         leading: const Icon(Icons.fitness_center),

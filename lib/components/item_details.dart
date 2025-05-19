@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 import '../models/workout_manager.dart';
 import '../models/gym.dart';
 import 'cart_control.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class ItemDetails extends StatefulWidget {
   final ExerciseItem item;
@@ -32,20 +34,16 @@ class _ItemDetailsState extends State<ItemDetails> with TickerProviderStateMixin
   @override
   void initState() {
     super.initState();
-
-    // Entry animations
     _enterController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 500),
     );
-
     _opacityAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: _enterController,
         curve: Curves.easeIn,
       ),
     );
-
     _slideAnimation = Tween<Offset>(
       begin: const Offset(0, 0.2),
       end: Offset.zero,
@@ -55,13 +53,10 @@ class _ItemDetailsState extends State<ItemDetails> with TickerProviderStateMixin
         curve: Curves.easeOut,
       ),
     );
-
-    // Add to cart animation
     _addToCartController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 300),
     );
-
     _enterController.forward();
   }
 
@@ -73,13 +68,8 @@ class _ItemDetailsState extends State<ItemDetails> with TickerProviderStateMixin
   }
 
   Future<void> _handleAddToCart(int number) async {
-    // Haptic feedback
     await HapticFeedback.lightImpact();
-
-    // Show success animation
     setState(() => _showSuccessAnimation = true);
-
-    // Add item to cart
     const uuid = Uuid();
     final uniqueId = uuid.v4();
     final cartItem = CartItem(
@@ -88,13 +78,9 @@ class _ItemDetailsState extends State<ItemDetails> with TickerProviderStateMixin
       price: widget.item.price,
       quantity: number,
     );
-
     widget.workoutManager.addItem(cartItem);
     widget.quantityUpdated();
-
-    // Wait for animation to complete
     await Future.delayed(const Duration(milliseconds: 1500));
-
     if (mounted) {
       Navigator.pop(context);
     }
@@ -105,6 +91,7 @@ class _ItemDetailsState extends State<ItemDetails> with TickerProviderStateMixin
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     final textTheme = theme.textTheme;
+    final l10n = Localizations.of<AppLocalizations>(context, AppLocalizations)!;
 
     return Stack(
       children: [
@@ -118,7 +105,6 @@ class _ItemDetailsState extends State<ItemDetails> with TickerProviderStateMixin
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // Exercise name
                   Text(
                     widget.item.name,
                     style: textTheme.headlineMedium?.copyWith(
@@ -126,8 +112,6 @@ class _ItemDetailsState extends State<ItemDetails> with TickerProviderStateMixin
                     ),
                   ),
                   const SizedBox(height: 16),
-
-                  // Step indicator
                   Row(
                     children: [
                       Container(
@@ -148,21 +132,17 @@ class _ItemDetailsState extends State<ItemDetails> with TickerProviderStateMixin
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        'Step 1 of 4',
+                        'Step 1 of 4',  // Fixed line
                         style: textTheme.bodyMedium,
                       ),
                     ],
                   ),
                   const SizedBox(height: 16),
-
-                  // Description
                   Text(
                     widget.item.description,
                     style: textTheme.bodyLarge,
                   ),
                   const SizedBox(height: 24),
-
-                  // Image - Fixed Hero widget syntax
                   Hero(
                     tag: 'item-${widget.item.name}',
                     child: Container(
@@ -177,8 +157,6 @@ class _ItemDetailsState extends State<ItemDetails> with TickerProviderStateMixin
                     ),
                   ),
                   const SizedBox(height: 24),
-
-                  // Add to cart control
                   ScaleTransition(
                     scale: Tween<double>(begin: 1.0, end: 0.95).animate(
                       CurvedAnimation(
@@ -200,8 +178,6 @@ class _ItemDetailsState extends State<ItemDetails> with TickerProviderStateMixin
             ),
           ),
         ),
-
-        // Success animation
         if (_showSuccessAnimation)
           Positioned.fill(
             child: IgnorePointer(
