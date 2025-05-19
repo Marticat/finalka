@@ -22,6 +22,34 @@ class Exercise {
     required this.targetMuscles,
     required this.category,
   });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'name': name,
+      'description': description,
+      'imageUrl': imageUrl,
+      'difficulty': difficulty,
+      'duration': duration,
+      'calories': calories,
+      'category': category,
+    };
+  }
+
+  factory Exercise.fromMap(Map<String, dynamic> map) {
+    return Exercise(
+      id: map['id'],
+      name: map['name'],
+      description: map['description'],
+      imageUrl: map['imageUrl'],
+      difficulty: map['difficulty'],
+      duration: map['duration'],
+      calories: map['calories'],
+      instructions: [],
+      targetMuscles: [],
+      category: map['category'],
+    );
+  }
 }
 List<Exercise> exercises = [
   // Strength

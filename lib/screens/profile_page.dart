@@ -123,29 +123,6 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget _buildExercisePlanCard(Exercise exercise) {
-    return Card(
-      child: ListTile(
-        leading: const Icon(Icons.fitness_center),
-        title: Text(exercise.name),
-        subtitle: Text('${exercise.calories} cal • ${exercise.duration} mins • ${exercise.category}'),
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            IconButton(
-              icon: const Icon(Icons.edit),
-              onPressed: () => _editExercise(exercise),
-            ),
-            IconButton(
-              icon: const Icon(Icons.delete),
-              onPressed: () => _deleteExercise(exercise),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   void _editExercise(Exercise exercise) {
     _exerciseNameController.text = exercise.name;
     _caloriesController.text = exercise.calories.toString();
@@ -291,6 +268,28 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  Widget _buildStatsSection(BuildContext context) {
+    int totalCalories = _plannedExercises.fold(0, (sum, e) => sum + e.calories);
+    int totalDuration = _plannedExercises.fold(0, (sum, e) => sum + e.duration);
+
+    return Card(
+      margin: const EdgeInsets.only(bottom: 16),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text("Your Stats", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8),
+            Text("Total Exercises: ${_plannedExercises.length}"),
+            Text("Total Duration: $totalDuration mins"),
+            Text("Total Calories: $totalCalories cal"),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _buildCardSection({required String title, required List<Widget> children}) {
     return Card(
       margin: const EdgeInsets.only(bottom: 16),
@@ -321,57 +320,45 @@ class _ProfilePageState extends State<ProfilePage> {
         centerTitle: true,
         backgroundColor: theme.colorScheme.primary,
         foregroundColor: theme.colorScheme.onPrimary,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: _showAddExerciseDialog,
-          ),
-        ],
       ),
-      body: SingleChildScrollView(
+      floatingActionButton: FloatingActionButton(
+        onPressed: _showAddExerciseDialog,
+        child: const Icon(Icons.add),
+      ),
+      body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: ListView(
           children: [
             _buildProfileHeader(context),
-            const SizedBox(height: 24),
+            const SizedBox(height: 16),
             _buildProgressSection(context),
-            const SizedBox(height: 24),
+            _buildStatsSection(context),
             _buildCardSection(
-              title: "My Exercise Plan",
-              children: _plannedExercises.isEmpty
-                  ? [
-                const ListTile(
-                  title: Text("No exercises planned yet"),
-                  subtitle: Text("Tap + to add exercises"),
-                )
-              ]
-                  : _plannedExercises.map(_buildExercisePlanCard).toList(),
+              title: 'Planned Exercises',
+              children: _plannedExercises.map(_buildExercisePlanCard).toList(),
             ),
-            const SizedBox(height: 24),
-            _buildCardSection(
-              title: "Workout Stats",
-              children: [
-                ListTile(
-                  leading: const Icon(Icons.local_fire_department),
-                  title: const Text("Total Calories"),
-                  subtitle: Text(
-                    "${_plannedExercises.fold(0, (sum, ex) => sum + ex.calories)} cal",
-                  ),
-                ),
-                ListTile(
-                  leading: const Icon(Icons.timer),
-                  title: const Text("Total Duration"),
-                  subtitle: Text(
-                    "${_plannedExercises.fold(0, (sum, ex) => sum + ex.duration)} mins",
-                  ),
-                ),
-                ListTile(
-                  leading: const Icon(Icons.fitness_center),
-                  title: const Text("Exercises Count"),
-                  subtitle: Text("${_plannedExercises.length} exercises"),
-                ),
-              ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildExercisePlanCard(Exercise exercise) {
+    return Card(
+      child: ListTile(
+        leading: const Icon(Icons.fitness_center),
+        title: Text(exercise.name),
+        subtitle: Text('${exercise.calories} cal • ${exercise.duration} mins • ${exercise.category}'),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              icon: const Icon(Icons.edit),
+              onPressed: () => _editExercise(exercise),
+            ),
+            IconButton(
+              icon: const Icon(Icons.delete),
+              onPressed: () => _deleteExercise(exercise),
             ),
           ],
         ),
