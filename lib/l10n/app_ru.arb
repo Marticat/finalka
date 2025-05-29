@@ -74,5 +74,21 @@
   "pleaseEnterValidEmail": "Пожалуйста, введите действительный email",
   "passwordMustBeAtLeast6Characters": "Пароль должен содержать минимум 6 символов",
   "step": "шаг",
-  "ofText": "из"
+  "ofText": "из",
+  "nutrition": "Питание",
+  "searchFood": "Поиск еды",
+  "mealPlan": "План питания",
+  "dailyNutrition": "Дневное питание",
+  "protein": "Белки",
+  "fat": "Жиры",
+  "carbs": "Углеводы",
+  "meals": "Приёмы пищи",
+  "snacks": "Перекусы",
+  "readyIn": "Готово за {minutes} мин",
+  "servings": "{count} порций",
+  "ingredients": "Ингредиенты",
+  "instructions": "Инструкции",
+  "setTargetCalories": "Задать цель по калориям",
+  "enterCalories": "Введите целевые калории",
+  "apply": "Применить"
 }

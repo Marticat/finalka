@@ -12,6 +12,7 @@ import 'package:finalka/services/auth_service.dart';
 import 'package:finalka/components/theme_button.dart';
 import 'package:finalka/components/color_button.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:finalka/screens/meal_plan_screen.dart'; // добавь этот импорт
 
 class Home extends StatefulWidget {
   const Home({
@@ -68,10 +69,31 @@ class _HomeState extends State<Home> with TickerProviderStateMixin {
       MyOrdersPage(
         planManager: widget.planManager,
       ),
-      FoodSearchScreen(),
+      DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          appBar: AppBar(
+            automaticallyImplyLeading: false,
+            title: Text('Nutrition'),
+            bottom: TabBar(
+              tabs: [
+                Tab(icon: Icon(Icons.search)),
+                Tab(icon: Icon(Icons.restaurant_menu)),
+              ],
+            ),
+          ),
+          body: TabBarView(
+            children: [
+              FoodSearchScreen(),
+              MealPlanScreen(),
+            ],
+          ),
+        ),
+      ),
       MapScreen(),
       ProfilePage(),
     ];
+
 
 
     _animationController.forward();

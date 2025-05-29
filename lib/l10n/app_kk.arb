@@ -74,5 +74,21 @@
   "pleaseEnterValidEmail": "Жарамды email енгізіңіз",
   "passwordMustBeAtLeast6Characters": "Құпия сөз кемінде 6 таңбадан тұруы керек",
   "step": "step",
-  "ofText": "of"
+  "ofText": "of",
+  "nutrition": "Тамақтану",
+  "searchFood": "Тағамды іздеу",
+  "mealPlan": "Тамақ жоспары",
+  "dailyNutrition": "Күнделікті тамақтану",
+  "protein": "Ақуыз",
+  "fat": "Май",
+  "carbs": "Көмірсулар",
+  "meals": "Тамақтар",
+  "snacks": "Тіскебасарлар",
+  "readyIn": "{minutes} мин ішінде дайын",
+  "servings": "{count} порция",
+  "ingredients": "Құрамы",
+  "instructions": "Нұсқаулықтар",
+  "setTargetCalories": "Калория мақсатын орнату",
+  "enterCalories": "Мақсатты калорияны енгізіңіз",
+  "apply": "Қолдану"
 }

@@ -74,5 +74,21 @@
   "pleaseEnterValidEmail": "Please enter a valid email",
   "passwordMustBeAtLeast6Characters": "Password must be at least 6 characters",
   "step": "step",
-  "ofText": "of"
+  "ofText": "of",
+  "nutrition": "Nutrition",
+  "searchFood": "Search Food",
+  "mealPlan": "Meal Plan",
+  "dailyNutrition": "Daily Nutrition",
+  "protein": "Protein",
+  "fat": "Fat",
+  "carbs": "Carbs",
+  "meals": "Meals",
+  "snacks": "Snacks",
+  "readyIn": "Ready in {minutes} min",
+  "servings": "{count} servings",
+  "ingredients": "Ingredients",
+  "instructions": "Instructions",
+  "setTargetCalories": "Set Target Calories",
+  "enterCalories": "Enter target calories",
+  "apply": "Apply"
 }
