@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 class FoodService {
   final String apiKey = '986cd2dc88574c08b9a9f34ef8cd1a78';
   final String baseUrl = 'https://api.spoonacular.com';
-
+  final http.Client client = http.Client(); // Add this line
   Future<List<dynamic>> searchFoods(String query) async {
     final url = Uri.parse(
       '$baseUrl/food/products/search?query=$query&number=10&apiKey=$apiKey',

@@ -90,5 +90,10 @@
   "instructions": "Instructions",
   "setTargetCalories": "Set Target Calories",
   "enterCalories": "Enter target calories",
-  "apply": "Apply"
+  "apply": "Apply",
+  "refresh": "Refresh",
+  "errorGettingNutrition": "Error loading nutrition",
+  "targetCalories": "Target",
+  "showNutritionDetails": "Show nutrition details",
+  "noMealsPlanned": "No meals planned yet"
 }
